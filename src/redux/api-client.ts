@@ -1,5 +1,5 @@
 // src/redux/api-client.ts
-import { showErrorToast } from "@/shared/utils/common";
+import { showErrorToast } from "@/utils/common";
 import axios from "axios";
 
 export const apiClient = axios.create({

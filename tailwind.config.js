@@ -4,10 +4,7 @@ import {heroui} from "@heroui/theme"
 export default {
   content: [
     "./index.html",
-    './src/shared/layouts/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/shared/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/modules/**/views/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
