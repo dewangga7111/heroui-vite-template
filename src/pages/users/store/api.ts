@@ -8,7 +8,7 @@ import {
   resetUsers,
   successUsers,
 } from "@/pages/users/store/reducer";
-import { User } from "@/types/user";
+import { User } from "@/types/users";
 import { TableFilter } from "@/types/table";
 
 export const fetchUsers =

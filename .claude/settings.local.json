@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm install:*)",
+      "WebFetch(domain:reactbits.dev)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill -9:*)"
     ]
   }
 }

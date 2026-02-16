@@ -1,6 +1,6 @@
 // src/redux/slices/users-slice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Role } from "@/types/role";
+import { Role } from "@/types/roles";
 import { TableFilter, TablePaging } from "@/types/table";
 
 interface RolesState {

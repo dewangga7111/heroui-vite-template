@@ -2,6 +2,48 @@
 
 @config "../../tailwind.config.js";
 
+@theme {
+  --breakpoint-3xl: 120rem;
+}
+
 .heroui-popover[aria-hidden="false"] {
   z-index: 1000 !important; /* ensure popovers are below modals */
+}
+
+/* Text Animation Styles */
+/* Hardware acceleration for split text animations */
+.split-char,
+.split-word,
+.split-line,
+.blur-char {
+  display: inline-block;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity, filter;
+}
+
+/* Parent container optimization */
+.split-parent {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Prevent text selection during animation */
+.split-char,
+.split-word,
+.split-line,
+.blur-char {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* After animation completes, remove will-change */
+.split-char.animated,
+.split-word.animated,
+.split-line.animated,
+.blur-char.animated {
+  will-change: auto;
 }

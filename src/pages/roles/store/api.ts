@@ -105,7 +105,7 @@ import {
   resetRoles,
   successRoles,
 } from "@/pages/roles/store/reducer";
-import { Role } from "@/types/role";
+import { Role } from "@/types/roles";
 import { TableFilter } from "@/types/table";
 import { rolesList } from "@/dummy/role";
 

@@ -1,4 +1,4 @@
-import { Role } from "@/types/role";
+import { Role } from "@/types/roles";
 
 export const  rolesList: Role[] = [
   { id: 1, role_name: "Admin", description: "Full access to all modules" },

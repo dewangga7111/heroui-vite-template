@@ -24,7 +24,7 @@ export default function DashboardLayout() {
         <div className="sticky top-0 z-50 mx-3">
           <Navbar />
         </div>
-        <main className="flex-grow px-3 py-3 overflow-y-auto">
+        <main className="flex-grow px-3 py-3 overflow-y-auto 3xl:max-w-7xl 3xl:mx-auto 3xl:w-full">
           <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>

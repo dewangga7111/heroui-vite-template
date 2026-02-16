@@ -4,12 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint --fix",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@heroui/react": "^2.8.4",
     "@react-aria/ssr": "3.9.10",
     "@react-aria/visually-hidden": "3.8.28",
@@ -21,6 +22,7 @@
     "clsx": "2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "11.18.2",
+    "gsap": "^3.14.2",
     "intl-messageformat": "10.7.16",
     "lucide-react": "^0.541.0",
     "next-themes": "^0.4.6",
