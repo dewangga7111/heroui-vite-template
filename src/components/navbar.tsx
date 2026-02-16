@@ -6,8 +6,6 @@ import {
   NavbarContent,
   NavbarItem,
   Avatar,
-  Breadcrumbs,
-  BreadcrumbItem,
   Drawer,
   useDisclosure,
   Button,
@@ -21,66 +19,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { EllipsisVertical, LogOut, Menu, User } from "lucide-react";
 import { MobileView, isMobile } from "react-device-detect";
 
-import { breadcrumbsItems } from "../config/breadcrumbs";
-import { useBreadcrumbs, Breadcrumb } from "@/contexts/breadcrumbs-context";
 import SidebarContent from "./sidebar/sidebar-content";
 import { useConfirmation } from "@/contexts/confirmation-context";
 import { showSuccessToast } from "@/utils/common";
 import { ManagedPopover } from "@/components/popover/managed-popover";
 import constants from "@/utils/constants"
 
-const getBasePath = (path: string) => {
-  // Remove query/hash
-  let cleanPath = path.split(/[?#]/)[0].replace(/\/$/, "");
-
-  // Split into parts
-  const parts = cleanPath.split("/").filter(Boolean);
-
-  // If the last part looks like an ID (number or UUID-like), remove it
-  if (/^\d+$/.test(parts.at(-1) as any) || /^[A-Za-z0-9_-]{6,}$/.test(parts.at(-1) as any)) {
-    parts.pop();
-  }
-
-  return "/" + parts.join("/");
-}
-
-// 🔑 Recursive function to find the breadcrumb trail
-const findBreadcrumbTrail = (
-  items: any[],
-  pathname: string,
-  trail: Breadcrumb[] = []
-): Breadcrumb[] | null => {
-  for (const item of items) {
-    const newTrail = [...trail, { label: item.label, path: item.path }];
-
-    if (item.path == getBasePath(pathname)) {
-      return newTrail;
-    }
-
-    if (item.children) {
-      const childTrail = findBreadcrumbTrail(item.children, pathname, newTrail);
-      if (childTrail) {
-        return childTrail;
-      }
-    }
-  }
-  return null;
-};
-
 export const Navbar = () => {
   const navigate = useNavigate();
-  const location = useLocation(); const pathname = location.pathname;
-  const { breadcrumbs, setBreadcrumbs } = useBreadcrumbs();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { confirm } = useConfirmation();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
-
-  useEffect(() => {
-    const trail = findBreadcrumbTrail(breadcrumbsItems, pathname) || [];
-    setBreadcrumbs(trail);
-  }, [pathname, setBreadcrumbs]);
 
   if (!mounted) return null;
 
@@ -104,17 +55,7 @@ export const Navbar = () => {
             </Button>
           </NavbarBrand>
         ) : (
-          <NavbarBrand>
-            {breadcrumbs.length > 0 && (
-              <Breadcrumbs size="md">
-                {breadcrumbs.map((crumb, idx) => (
-                  <BreadcrumbItem key={idx} onPress={() => navigate(crumb.path as string)} isDisabled={!crumb.path} className="font-semibold">
-                    {crumb.label}
-                  </BreadcrumbItem>
-                ))}
-              </Breadcrumbs>
-            )}
-          </NavbarBrand>
+          <NavbarBrand />
         )}
 
         {/* Right Section - Actions */}

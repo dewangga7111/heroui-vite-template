@@ -6,7 +6,6 @@ import { useHref, useNavigate } from "react-router-dom";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import { ReduxProvider } from "@/redux/providers";
-import { BreadcrumbProvider } from "@/contexts/breadcrumbs-context";
 import { PermissionProvider } from "@/contexts/permission-context";
 import { ConfirmationProvider } from "@/contexts/confirmation-context";
 
@@ -23,14 +22,12 @@ export function Provider({ children }: { children: React.ReactNode }) {
     <HeroUIProvider navigate={navigate} useHref={useHref}>
       <NextThemesProvider attribute="class" defaultTheme="light">
         <ReduxProvider>
-          <BreadcrumbProvider>
-            <PermissionProvider>
-              <ConfirmationProvider>
-                <ToastProvider />
-                {children}
-              </ConfirmationProvider>
-            </PermissionProvider>
-          </BreadcrumbProvider>
+          <PermissionProvider>
+            <ConfirmationProvider>
+              <ToastProvider />
+              {children}
+            </ConfirmationProvider>
+          </PermissionProvider>
         </ReduxProvider>
       </NextThemesProvider>
     </HeroUIProvider>
