@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 import { Card } from "@heroui/react";
 import SidebarContent from "./sidebar-content";
 
-export default function Sidebar() {
+interface SidebarProps {
+  open: boolean;
+  setOpen: (val: boolean) => void;
+}
+
+export default function Sidebar({ open, setOpen }: SidebarProps) {
   const [mounted, setMounted] = useState(false);
-  const [open, setOpen] = useState(true);
 
   useEffect(() => setMounted(true), []);
 

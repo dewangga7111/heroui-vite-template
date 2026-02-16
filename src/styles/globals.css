@@ -47,3 +47,7 @@
 .blur-char.animated {
   will-change: auto;
 }
+
+header {
+  padding-inline: 5px;
+}

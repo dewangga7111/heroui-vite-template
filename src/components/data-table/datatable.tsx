@@ -88,7 +88,14 @@ export default function Datatable({
     }
 
     if (!rows || rows.length === 0) {
-      return <p className="text-center text-default-500 py-6">{emptyContent}</p>;
+      return (
+        <div className="w-full flex flex-col">
+          <div className="mb-4">{topContent}</div>
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <p className="text-center text-default-500">{emptyContent}</p>
+          </div>
+        </div>
+      );
     }
 
     return (
@@ -119,10 +126,10 @@ export default function Datatable({
                     .filter((col) => col.key !== "action") // exclude action from body
                     .map((col) => (
                       <div key={col.key} className="flex justify-between">
-                        <span className="text-default-500 font-medium">
+                        <span className="font-bold">
                           {col.label}
                         </span>
-                        <span className="text-right">
+                        <span className="text-right text-default-500 ">
                           {renderCell
                             ? renderCell(item, col.key)
                             : getKeyValue(item, col.key)}

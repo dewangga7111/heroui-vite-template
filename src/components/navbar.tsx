@@ -12,7 +12,8 @@ import {
   DrawerContent,
   DrawerBody,
   Listbox,
-  ListboxItem
+  ListboxItem,
+  Tooltip
 } from "@heroui/react";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -25,7 +26,12 @@ import { showSuccessToast } from "@/utils/common";
 import { ManagedPopover } from "@/components/popover/managed-popover";
 import constants from "@/utils/constants"
 
-export const Navbar = () => {
+interface NavbarProps {
+  sidebarOpen?: boolean;
+  setSidebarOpen?: (val: boolean) => void;
+}
+
+export const Navbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { confirm } = useConfirmation();
@@ -43,8 +49,8 @@ export const Navbar = () => {
         className="backdrop-blur-md rounded-bl-lg rounded-br-lg shadow-sm"
         position="sticky"
       >
-        {isMobile ? (
-          <NavbarBrand>
+        <NavbarBrand>
+          {isMobile ? (
             <Button
               isIconOnly
               variant="light"
@@ -53,10 +59,29 @@ export const Navbar = () => {
             >
               <Menu size={20} />
             </Button>
-          </NavbarBrand>
-        ) : (
-          <NavbarBrand />
-        )}
+          ) : (
+            setSidebarOpen && (
+              <Tooltip
+                content={sidebarOpen ? "Close Sidebar" : "Open Sidebar"}
+                showArrow
+                placement="right"
+                color="foreground"
+                closeDelay={0}
+                delay={500}
+                size="sm"
+              >
+                <Button
+                  isIconOnly
+                  variant="light"
+                  onPress={() => setSidebarOpen(!sidebarOpen)}
+                  aria-label="Toggle Menu"
+                >
+                  <Menu size={20} />
+                </Button>
+              </Tooltip>
+            )
+          )}
+        </NavbarBrand>
 
         {/* Right Section - Actions */}
         <NavbarContent justify="end">
@@ -77,7 +102,6 @@ export const Navbar = () => {
               trigger={
                 <Button
                   variant="light"
-                  size="sm"
                   isIconOnly
                 >
                   <EllipsisVertical size={20} />

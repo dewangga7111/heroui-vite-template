@@ -1,7 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { Button, Tooltip, ScrollShadow, Image } from "@heroui/react";
-import { Menu } from "lucide-react";
+import { ScrollShadow, Image } from "@heroui/react";
 import { useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { isMobile } from "react-device-detect";
@@ -15,10 +14,10 @@ import constants from "@/utils/constants";
 interface SidebarContentProps {
   open: boolean;
   setOpen: (val: boolean) => void;
-  onClose?: () => void; // 👈 NEW
+  onClose?: () => void;
 }
 
-export default function SidebarContent({ open, setOpen, onClose }: SidebarContentProps) {
+export default function SidebarContent({ open, onClose }: SidebarContentProps) {
   const [mounted, setMounted] = useState(false);
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
   const location = useLocation();
@@ -60,31 +59,13 @@ export default function SidebarContent({ open, setOpen, onClose }: SidebarConten
           {open && <span className="font-bold">{appName}</span>}
         </div>
       ) : (
-        <div className="flex items-center justify-between p-3">
-          <Tooltip
-            content={open ? "Close Sidebar" : "Open Sidebar"}
-            showArrow
-            placement="right"
-            color="foreground"
-            closeDelay={0}
-            delay={500}
-            size="sm"
-          >
-            <Button
-              isIconOnly
-              variant="light"
-              onPress={() => setOpen(!open)}
-              aria-label="Toggle Menu"
-            >
-              <Menu size={20} />
-            </Button>
-          </Tooltip>
-          {open && <span className="font-bold"><Image src="/vite.svg" alt="Logo" height={50} /></span>}
+        <div className="flex items-center justify-start p-3">
+          <span className="font-bold"><Image src="/vite.svg" alt="Logo" height={50} /></span>
         </div>
       )}
 
       {/* Menu */}
-      <ScrollShadow aria-label="Sidebar menu" className="flex-grow">
+      <ScrollShadow aria-label="Sidebar menu" className="flex-grow mt-3">
         {menus
           .filter((item) => shouldShowMenu(item))
           .map((item) => (

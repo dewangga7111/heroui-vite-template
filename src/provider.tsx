@@ -24,7 +24,7 @@ export function Provider({ children }: { children: React.ReactNode }) {
         <ReduxProvider>
           <PermissionProvider>
             <ConfirmationProvider>
-              <ToastProvider />
+              <ToastProvider placement="top-right" toastOffset={10}/>
               {children}
             </ConfirmationProvider>
           </PermissionProvider>
