@@ -9,14 +9,15 @@ import Dashboard from "@/pages/dashboard/views/dashboard";
 
 // Module views - Users
 import UsersTable from "@/pages/users/views/users-table";
-import UserAdd from "@/pages/users/views/user-add";
-import UserEdit from "@/pages/users/views/user-edit";
+import UserFormPage from "@/pages/users/views/user-form";
 
 // Module views - Roles
 import RolesTable from "@/pages/roles/views/roles-table";
-import RoleAdd from "@/pages/roles/views/role-add";
-import RoleEdit from "@/pages/roles/views/role-edit";
+import RoleFormPage from "@/pages/roles/views/role-form";
 import RolePermission from "@/pages/roles/views/role-permission";
+
+// Module views - Form Builder
+import FormBuilder from "@/pages/form-builder/views/form-builder";
 
 // Module views - Auth
 import Login from "@/pages/auth/views/login";
@@ -31,14 +32,17 @@ function App() {
 
         {/* Users Module */}
         <Route path="/users" element={<UsersTable />} />
-        <Route path="/users/add" element={<UserAdd />} />
-        <Route path="/users/edit/:id" element={<UserEdit />} />
+        <Route path="/users/add" element={<UserFormPage />} />
+        <Route path="/users/edit/:id" element={<UserFormPage isEdit />} />
 
         {/* Roles Module */}
         <Route path="/roles" element={<RolesTable />} />
-        <Route path="/roles/add" element={<RoleAdd />} />
-        <Route path="/roles/edit/:id" element={<RoleEdit />} />
+        <Route path="/roles/add" element={<RoleFormPage />} />
+        <Route path="/roles/edit/:id" element={<RoleFormPage isEdit />} />
         <Route path="/roles/permission/:id" element={<RolePermission />} />
+
+        {/* Form Builder Module */}
+        <Route path="/form-builder/:id" element={<FormBuilder />} />
       </Route>
 
       {/* Auth Routes with Blank Layout */}

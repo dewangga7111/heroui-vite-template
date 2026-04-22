@@ -13,6 +13,7 @@ const moduleConfig = {
   confirmation: {
     DELETE: "Are you sure you want to delete this data?",
     SAVE: "Are you sure you want to save this data?",
+    UPDATE: "Are you sure you want to update this data?",
     LOGOUT: "Are you sure you want to logout?"
   },
   toast: {

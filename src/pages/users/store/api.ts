@@ -3,6 +3,7 @@ import { apiClient } from "@/redux/api-client";
 import { AppDispatch, RootState } from "@/redux/store";
 import {
   setLoading,
+  setDetail,
   setUsers,
   errorUsers,
   resetUsers,
@@ -10,6 +11,17 @@ import {
 } from "@/pages/users/store/reducer";
 import { User } from "@/types/users";
 import { TableFilter } from "@/types/table";
+
+export const getUserById =
+  (id: number) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setLoading(true));
+      const response = await apiClient.get(`/users/${id}`);
+      dispatch(setDetail(response.data));
+    } catch (error: any) {
+      dispatch(errorUsers(error.response?.data?.message || error.message));
+    }
+  };
 
 export const fetchUsers =
   (param: TableFilter) =>

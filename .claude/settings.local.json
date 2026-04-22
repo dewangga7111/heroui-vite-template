@@ -5,7 +5,9 @@
       "Bash(npm install:*)",
       "WebFetch(domain:reactbits.dev)",
       "Bash(lsof:*)",
-      "Bash(xargs kill -9:*)"
+      "Bash(xargs kill -9:*)",
+      "Bash(npx tsc *)",
+      "Bash(curl -s http://localhost:5173)"
     ]
   }
 }

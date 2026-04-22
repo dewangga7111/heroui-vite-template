@@ -5,6 +5,7 @@ import { TableFilter, TablePaging } from "@/types/table";
 
 interface RolesState {
   data: Role[];
+  detail: Partial<Role>;
   params: TableFilter;
   paging: TablePaging;
   loading: boolean;
@@ -14,6 +15,7 @@ interface RolesState {
 
 const initialState: RolesState = {
   data: [],
+  detail: {},
   params: {},
   paging: {
     page: 1,
@@ -32,6 +34,10 @@ const rolesSlice = createSlice({
   reducers: {
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
+    },
+    setDetail: (state, action: PayloadAction<Partial<Role>>) => {
+      state.detail = action.payload;
+      state.loading = false;
     },
     setRoles: (
       state,
@@ -65,5 +71,5 @@ const rolesSlice = createSlice({
   },
 });
 
-export const { setLoading, setRoles, successRoles, errorRoles, resetRoles, clearRoles } = rolesSlice.actions;
+export const { setLoading, setDetail, setRoles, successRoles, errorRoles, resetRoles, clearRoles } = rolesSlice.actions;
 export default rolesSlice.reducer;

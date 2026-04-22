@@ -5,6 +5,7 @@ import { TableFilter, TablePaging } from "@/types/table";
 
 interface UsersState {
   data: User[];
+  detail: Partial<User>;
   params: TableFilter;
   paging: TablePaging;
   loading: boolean;
@@ -14,6 +15,7 @@ interface UsersState {
 
 const initialState: UsersState = {
   data: [],
+  detail: {},
   params: {},
   paging: {
     page: 1,
@@ -32,6 +34,10 @@ const usersSlice = createSlice({
   reducers: {
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
+    },
+    setDetail: (state, action: PayloadAction<Partial<User>>) => {
+      state.detail = action.payload;
+      state.loading = false;
     },
     setUsers: (
       state,
@@ -65,5 +71,5 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setLoading, setUsers, successUsers, errorUsers, resetUsers, clearUsers } = usersSlice.actions;
+export const { setLoading, setDetail, setUsers, successUsers, errorUsers, resetUsers, clearUsers } = usersSlice.actions;
 export default usersSlice.reducer;

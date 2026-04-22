@@ -100,6 +100,7 @@
 import { AppDispatch, RootState } from "@/redux/store";
 import {
   setLoading,
+  setDetail,
   setRoles,
   errorRoles,
   resetRoles,
@@ -115,6 +116,22 @@ const simulateDelay = async (ms = 500) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // ---- MOCKED ENDPOINTS ----
+export const getRoleById =
+  (id: number) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setLoading(true));
+      await simulateDelay();
+      const role = rolesList.find((r) => r.id === id);
+      if (role) {
+        dispatch(setDetail(role));
+      } else {
+        dispatch(errorRoles("Role not found"));
+      }
+    } catch (error: any) {
+      dispatch(errorRoles(error.message || "Failed to fetch mock role"));
+    }
+  };
+
 export const fetchRoles =
   (param: TableFilter) =>
     async (dispatch: AppDispatch) => {
