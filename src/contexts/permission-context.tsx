@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { permissionList, Permission } from "@/dummy/permission";
-import constants from "@/utils/constants";
 
 type PermissionContextType = {
   permissions: Permission[];
@@ -34,10 +33,10 @@ export const PermissionProvider = ({ children }: { children: React.ReactNode }) 
     return (perm as any)[action] === 'Y';
   };
 
-  const canRead = (pageId: string) => hasPermission(pageId, constants.permission.READ);
-  const canCreate = (pageId: string) => hasPermission(pageId, constants.permission.CREATE);
-  const canUpdate = (pageId: string) => hasPermission(pageId, constants.permission.UPDATE);
-  const canDelete = (pageId: string) => hasPermission(pageId, constants.permission.DELETE);
+  const canRead = (pageId: string) => hasPermission(pageId, "read");
+  const canCreate = (pageId: string) => hasPermission(pageId, "create");
+  const canUpdate = (pageId: string) => hasPermission(pageId, "update");
+  const canDelete = (pageId: string) => hasPermission(pageId, "delete");
 
   return (
     <PermissionContext.Provider value={{

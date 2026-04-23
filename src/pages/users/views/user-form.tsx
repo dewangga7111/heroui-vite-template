@@ -11,7 +11,6 @@ import { useConfirmation } from "@/contexts/confirmation-context";
 import { AppDispatch, RootState } from "@/redux/store";
 import { createUser, getUserById, updateUser } from "@/pages/users/store/api";
 import { actionButtons, button, form, inputContainer } from "@/components/primitives";
-import constants from "@/utils/constants";
 
 interface UserFormPageProps {
   isEdit?: boolean;
@@ -40,8 +39,8 @@ export default function UserFormPage({ isEdit = false }: UserFormPageProps) {
 
   useEffect(() => {
     if (store.success) {
-      showSuccessToast(constants.toast.SUCCESS_SAVE);
-      navigate(constants.path.USERS);
+      showSuccessToast("Data Saved Successfully");
+      navigate("/users");
     } else if (store.error) {
       showErrorToast(store.error);
     }
@@ -51,7 +50,7 @@ export default function UserFormPage({ isEdit = false }: UserFormPageProps) {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
     confirm({
-      message: isEdit ? constants.confirmation.UPDATE : constants.confirmation.SAVE,
+      message: isEdit ? "Are you sure you want to update this data?" : "Are you sure you want to save this data?",
       onConfirm: () => {
         if (isEdit) {
           dispatch(updateUser(userId, data as any));

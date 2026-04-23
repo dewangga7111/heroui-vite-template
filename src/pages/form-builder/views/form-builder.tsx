@@ -487,7 +487,7 @@ export default function FormBuilderPage() {
     <div className="flex gap-0 min-h-screen">
 
       {/* ── Left Sidebar ─────────────────────────────────────────────────────── */}
-      <div className="w-80 shrink-0 border-r border-default-200 flex flex-col gap-4 pr-4 overflow-y-auto">
+      <div className="w-100 shrink-0 border-r border-default-200 flex flex-col gap-4 pr-4 overflow-y-auto">
 
         {/* Add Section Card */}
         <Card className="px-1" shadow="sm">

@@ -8,7 +8,6 @@ import { Button, Card, CardBody, Form } from "@heroui/react";
 import Footer from "@/components/footer";
 import { showSuccessToast, showErrorToast } from "@/utils/common";
 import { isMobile } from "react-device-detect";
-import constants from "@/utils/constants";
 import { ShinyText, BlurText, SplitText } from "@/components/text-animations";
 
 export default function LoginPage() {
@@ -29,12 +28,12 @@ export default function LoginPage() {
 
       // Mock validation
       if (formData.user_id === "admin" && formData.password === "admin") {
-        showSuccessToast(constants.toast.SUCCESS_LOGIN);
+        showSuccessToast("Login Successfully");
 
         // Store auth data in localStorage
         localStorage.setItem("isAuthenticated", "true");
 
-        navigate(constants.path.DASHBOARD);
+        navigate("/");
       } else {
         showErrorToast("Invalid credentials. Try admin/admin");
       }

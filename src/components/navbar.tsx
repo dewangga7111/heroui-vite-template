@@ -24,7 +24,6 @@ import SidebarContent from "./sidebar/sidebar-content";
 import { useConfirmation } from "@/contexts/confirmation-context";
 import { showSuccessToast } from "@/utils/common";
 import { ManagedPopover } from "@/components/popover/managed-popover";
-import constants from "@/utils/constants"
 
 interface NavbarProps {
   sidebarOpen?: boolean;
@@ -124,10 +123,10 @@ export const Navbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {
                   startContent={<LogOut size={13} />}
                   onPress={() => {
                     confirm({
-                      message: constants.confirmation.LOGOUT,
+                      message: "Are you sure you want to logout?",
                       onConfirm: () => {
-                        showSuccessToast(constants.toast.SUCCESS_LOGOUT);
-                        navigate(constants.path.LOGIN)
+                        showSuccessToast("You have been loged out!");
+                        navigate("/auth/login")
                       },
                     });
                   }}

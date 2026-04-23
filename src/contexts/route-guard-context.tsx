@@ -1,4 +1,3 @@
-import constants from "@/utils/constants"
 import { usePermission } from "@/contexts/permission-context";
 
 import { createContext, useEffect } from "react";
@@ -26,7 +25,7 @@ export const RouteGuardProvider = ({
 
     if (!hasAccess) {
       console.warn(`🚫 No ${access} permission for: ${pageId}`);
-      navigate(constants.path.UNAUTHORIZED);
+      navigate("/403");
     }
   }, [pageId, access, hasPermission, navigate]);
 

@@ -1,4 +1,4 @@
-import { Home, Settings, LogOut } from "lucide-react";
+import { Home, Settings, LogOut, Layers } from "lucide-react";
 import { ReactNode } from "react";
 
 type MenuItem = {
@@ -15,6 +15,12 @@ export const menus: MenuItem[] = [
     label: "Dashboard",
     icon: <Home size={18} />,
     path: "/",
+  },
+  {
+    key: "GROUPS_PAGE",
+    label: "Groups",
+    icon: <Layers size={18} />,
+    path: "/groups",
   },
   {
     key: "settings",

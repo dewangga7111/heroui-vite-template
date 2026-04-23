@@ -16,6 +16,10 @@ import RolesTable from "@/pages/roles/views/roles-table";
 import RoleFormPage from "@/pages/roles/views/role-form";
 import RolePermission from "@/pages/roles/views/role-permission";
 
+// Module views - Groups
+import GroupsTable from "@/pages/groups/views/groups-table";
+import GroupFormPage from "@/pages/groups/views/group-form";
+
 // Module views - Form Builder
 import FormBuilder from "@/pages/form-builder/views/form-builder";
 
@@ -40,6 +44,11 @@ function App() {
         <Route path="/roles/add" element={<RoleFormPage />} />
         <Route path="/roles/edit/:id" element={<RoleFormPage isEdit />} />
         <Route path="/roles/permission/:id" element={<RolePermission />} />
+
+        {/* Groups Module */}
+        <Route path="/groups" element={<GroupsTable />} />
+        <Route path="/groups/add" element={<GroupFormPage />} />
+        <Route path="/groups/edit/:id" element={<GroupFormPage isEdit />} />
 
         {/* Form Builder Module */}
         <Route path="/form-builder/:id" element={<FormBuilder />} />

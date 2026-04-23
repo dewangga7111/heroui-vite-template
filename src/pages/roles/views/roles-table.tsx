@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 import Datatable from "@/components/data-table/datatable";
 import Filter from "@/components/filters/filter";
-import constants from "@/utils/constants";
 import { TableColumnType, TableRowType } from "@/types/table";
 import { FilterField } from "@/types/filter";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -64,7 +63,7 @@ export default function RolesPage() {
         onPageChange={(page: number) => {
           dispatch(fetchRoles({ ...store.params, ...store.paging, page }));
         }}
-        doAdd={() => navigate(`${constants.path.ROLES}/add`)}
+        doAdd={() => navigate("/roles/add")}
       />
     </div>
   );
