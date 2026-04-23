@@ -24,17 +24,35 @@ import SidebarContent from "./sidebar/sidebar-content";
 import { useConfirmation } from "@/contexts/confirmation-context";
 import { showSuccessToast } from "@/utils/common";
 import { ManagedPopover } from "@/components/popover/managed-popover";
+import { menus } from "@/config/menu";
 
 interface NavbarProps {
   sidebarOpen?: boolean;
   setSidebarOpen?: (val: boolean) => void;
 }
 
+function getActiveMenuLabel(pathname: string): string {
+  for (const item of menus) {
+    if (item.children) {
+      const child = item.children.find((c) => c.path && pathname.startsWith(c.path));
+      if (child) return child.label;
+    } else if (item.path && pathname.startsWith(item.path) && item.path !== "/") {
+      return item.label;
+    }
+  }
+  // fallback: Dashboard for root
+  const dashboard = menus.find((m) => m.path === "/");
+  return dashboard?.label ?? "Dashboard";
+}
+
 export const Navbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { confirm } = useConfirmation();
   const [mounted, setMounted] = useState(false);
+
+  const activeLabel = getActiveMenuLabel(location.pathname);
 
   useEffect(() => setMounted(true), []);
 
@@ -48,7 +66,7 @@ export const Navbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {
         className="backdrop-blur-md rounded-bl-lg rounded-br-lg shadow-sm"
         position="sticky"
       >
-        <NavbarBrand>
+        <NavbarBrand className="gap-1">
           {isMobile ? (
             <Button
               isIconOnly
@@ -80,6 +98,7 @@ export const Navbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {
               </Tooltip>
             )
           )}
+          <span className="text-md font-semibold ml-1">{activeLabel}</span>
         </NavbarBrand>
 
         {/* Right Section - Actions */}

@@ -30,7 +30,7 @@ import { Copy, FileQuestion, Plus, Save, Trash2 } from "lucide-react";
 import { useConfirmation } from "@/contexts/confirmation-context";
 import { showSuccessToast, showErrorToast } from "@/utils/common";
 import AppTextInput from "@/components/forms/app-text-input";
-import { actionButtons, button, form, inputContainer } from "@/components/primitives";
+import { actionButtons, button, form } from "@/components/primitives";
 import { ComboOption, ElementSettings, FormField } from "@/types/form-builder";
 
 import { DEFAULT_SETTINGS, colsClass } from "../constants";
@@ -600,10 +600,9 @@ export default function FormBuilderPage() {
                       )}
                     </div>
                   </CardHeader>
-                  <Divider />
                   <CardBody>
                     {sectionElements.length > 0 ? (
-                      <div className={inputContainer()}>
+                      <div className="grid grid-cols-12 gap-4">
                         {sectionElements.map((element) => (
                           <div key={element.field_id} className={colsClass[element.cols] || colsClass.auto}>
                             <PreviewElement

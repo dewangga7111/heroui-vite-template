@@ -88,8 +88,16 @@ export const COMBO_TIPE_ELEMEN = [
 ] as const;
 
 export const COLS_OPTIONS = [
-  { label: "Full", value: "12" },
-  { label: "1/2", value: "6" },
-  { label: "1/3", value: "4" },
-  { label: "1/4", value: "3" },
+  { label: "col-1  (1/12)", value: "1" },
+  { label: "col-2  (1/6)",  value: "2" },
+  { label: "col-3  (1/4)",  value: "3" },
+  { label: "col-4  (1/3)",  value: "4" },
+  { label: "col-5  (5/12)", value: "5" },
+  { label: "col-6  (1/2)",  value: "6" },
+  { label: "col-7  (7/12)", value: "7" },
+  { label: "col-8  (2/3)",  value: "8" },
+  { label: "col-9  (3/4)",  value: "9" },
+  { label: "col-10 (5/6)",  value: "10" },
+  { label: "col-11 (11/12)", value: "11" },
+  { label: "col-12 (Full)", value: "12" },
 ] as const;
