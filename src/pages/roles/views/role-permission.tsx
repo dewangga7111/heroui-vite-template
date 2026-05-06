@@ -21,7 +21,6 @@ import { showErrorToast, showSuccessToast } from "@/utils/common";
 import { useConfirmation } from "@/contexts/confirmation-context";
 import { RootState } from "@/redux/store";
 import { actionButtons, button, form } from "@/components/primitives";
-import constants from "@/utils/constants";
 
 export default function EditPermissionPage() {
   const navigate = useNavigate();
@@ -37,8 +36,8 @@ export default function EditPermissionPage() {
 
   useEffect(() => {
     if (store.success) {
-      showSuccessToast(constants.toast.SUCCESS_SAVE);
-      navigate(constants.path.ROLES);
+      showSuccessToast("Data Saved Successfully");
+      navigate("/roles");
     } else if (store.error) {
       showErrorToast(store.error);
     }
@@ -56,7 +55,7 @@ export default function EditPermissionPage() {
     e.preventDefault();
 
     confirm({
-      message: constants.confirmation.SAVE,
+      message: "Are you sure you want to save this data?",
       onConfirm: () => {
         doSave();
       },
@@ -65,8 +64,8 @@ export default function EditPermissionPage() {
 
   const doSave = () => {
     console.log("Saving permissions:", permissions);
-    showSuccessToast(constants.toast.SUCCESS_SAVE);
-    navigate(constants.path.ROLES);
+    showSuccessToast("Data Saved Successfully");
+    navigate("/roles");
   };
 
   return (

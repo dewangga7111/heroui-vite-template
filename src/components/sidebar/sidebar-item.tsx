@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { isMenuActive } from "./utils";
 
@@ -43,9 +43,9 @@ export default function SidebarMenuItem({
             {open && (
               <div className="flex justify-between w-full items-center">
                 {item.label}
-                <ChevronRight
+                <ChevronDown
                   size={16}
-                  className={`transition-transform duration-300 ${isOpen ? "rotate-90" : "rotate-0"
+                  className={`transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"
                     }`}
                 />
               </div>

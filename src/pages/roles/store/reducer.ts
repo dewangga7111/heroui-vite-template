@@ -1,10 +1,10 @@
-// src/redux/slices/users-slice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Role } from "@/types/roles";
 import { TableFilter, TablePaging } from "@/types/table";
 
 interface RolesState {
   data: Role[];
+  detail: Partial<Role>;
   params: TableFilter;
   paging: TablePaging;
   loading: boolean;
@@ -14,16 +14,12 @@ interface RolesState {
 
 const initialState: RolesState = {
   data: [],
+  detail: {},
   params: {},
-  paging: {
-    page: 1,
-    totalPage: 1,
-    totalRows: 0,
-    limit: 10,
-  },
+  paging: { page: 1, totalPage: 1, totalRows: 0, limit: 10 },
   loading: false,
   success: false,
-  error: '',
+  error: "",
 };
 
 const rolesSlice = createSlice({
@@ -33,21 +29,19 @@ const rolesSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setDetail: (state, action: PayloadAction<Partial<Role>>) => {
+      state.detail = action.payload;
+      state.loading = false;
+    },
     setRoles: (
       state,
-      action: PayloadAction<{
-        data?: Role[],
-        params?: TableFilter,
-        paging?: TablePaging;
-      }>
+      action: PayloadAction<{ data?: Role[]; params?: TableFilter; paging?: TablePaging }>
     ) => {
-      if (action.payload.data !== undefined) {
-        state.data = action.payload.data
-      };
+      if (action.payload.data !== undefined) state.data = action.payload.data;
       if (action.payload.params !== undefined) state.params = action.payload.params;
       if (action.payload.paging !== undefined) state.paging = action.payload.paging;
       state.loading = false;
-      state.error = '';
+      state.error = "";
     },
     errorRoles: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
@@ -59,11 +53,12 @@ const rolesSlice = createSlice({
     },
     resetRoles: (state) => {
       state.success = false;
-      state.error = '';
+      state.error = "";
     },
     clearRoles: () => initialState,
   },
 });
 
-export const { setLoading, setRoles, successRoles, errorRoles, resetRoles, clearRoles } = rolesSlice.actions;
+export const { setLoading, setDetail, setRoles, successRoles, errorRoles, resetRoles, clearRoles } =
+  rolesSlice.actions;
 export default rolesSlice.reducer;

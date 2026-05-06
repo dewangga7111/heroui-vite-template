@@ -9,7 +9,6 @@ import SidebarMenuItem from "./sidebar-item";
 import { menus } from "@/config/menu";
 import { isMenuActive } from "./utils";
 import { usePermission } from "@/contexts/permission-context";
-import constants from "@/utils/constants";
 
 interface SidebarContentProps {
   open: boolean;
@@ -36,14 +35,14 @@ export default function SidebarContent({ open, onClose }: SidebarContentProps) {
     const newOpenMenus: Record<string, boolean> = {};
     menus.forEach((item) => {
       if (item.children && isMenuActive(item, pathname)) {
-        newOpenMenus[item.key] = true;
+        if (item.key !== undefined) newOpenMenus[String(item.key)] = true;
       }
     });
     setOpenMenus((prev) => ({ ...prev, ...newOpenMenus }));
   }, [pathname]);
 
   const shouldShowMenu = (item: any): boolean => {
-    if (item.key && hasPermission(item.key, constants.permission.READ)) return true;
+    if (item.key && hasPermission(item.key, "read")) return true;
     if (item.children && item.children.some((child: any) => shouldShowMenu(child)))
       return true;
     return false;

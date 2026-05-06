@@ -1,95 +1,103 @@
-// src/redux/api/users-api.ts
-import { apiClient } from "@/redux/api-client";
 import { AppDispatch, RootState } from "@/redux/store";
-import {
-  setLoading,
-  setUsers,
-  errorUsers,
-  resetUsers,
-  successUsers,
-} from "@/pages/users/store/reducer";
-import { User } from "@/types/users";
+import { setLoading, setDetail, setUsers, errorUsers, successUsers } from "@/pages/users/store/reducer";
 import { TableFilter } from "@/types/table";
+import { usersList, UserItem } from "@/dummy/users";
 
-export const fetchUsers =
-  (param: TableFilter) =>
-    async (dispatch: AppDispatch) => {
-      try {
-        dispatch(setLoading(true));
-        // ✅ Add skip dynamically (without mutating the original param)
-        const response = await apiClient.get("/users", {
-          params: { ...param, skip: ((param.page || 1) - 1) * (param.limit || 10) }
-        });
+const simulateDelay = (ms = 500) => new Promise((resolve) => setTimeout(resolve, ms));
 
-        dispatch(setUsers({
-          data: response.data?.users,
-          params: {
-            ...param,
-          },
-          paging: {
-            page: param.page || 1,
-            totalPage: Math.ceil(response.data?.total / param.limit || 10),
-            totalRows: response.data?.total,
-            limit: param.limit
-          }
-        }));
-      } catch (error: any) {
-        dispatch(errorUsers(error.response?.data?.message || error.message));
-      }
-    };
-
-
-
-export const createUser =
-  (user: Omit<User, "id">) => async (dispatch: AppDispatch) => {
+export const getUserById =
+  (user_id: number) => async (dispatch: AppDispatch) => {
     try {
       dispatch(setLoading(true));
-      const response = await apiClient.post("/users", user);
-      if (response.status == 200) {
-        dispatch(successUsers());
+      await simulateDelay();
+      const user = usersList.find((u) => u.user_id === user_id);
+      if (user) {
+        dispatch(setDetail(user));
       } else {
-        dispatch(errorUsers(response.data?.message || response.statusText));
+        dispatch(errorUsers("User not found"));
       }
     } catch (error: any) {
-      dispatch(errorUsers(error.response?.data?.message || error.message));
-    } finally {
-      dispatch(resetUsers())
+      dispatch(errorUsers(error.message || "Failed to fetch user"));
+    }
+  };
+
+export const fetchUsers =
+  (param: TableFilter) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setLoading(true));
+      await simulateDelay();
+
+      const limit = param.limit || 10;
+      const page = param.page || 1;
+      const skip = (page - 1) * limit;
+
+      const filtered = param.name
+        ? usersList.filter((u) => u.name.toLowerCase().includes((param.name as string).toLowerCase()))
+        : usersList;
+
+      const paged = filtered.slice(skip, skip + limit);
+
+      dispatch(
+        setUsers({
+          data: paged,
+          params: param,
+          paging: {
+            page,
+            totalPage: Math.ceil(filtered.length / limit),
+            totalRows: filtered.length,
+            limit,
+          },
+        })
+      );
+    } catch (error: any) {
+      dispatch(errorUsers(error.message || "Failed to fetch users"));
+    }
+  };
+
+export const createUser =
+  (user: Omit<UserItem, "user_id">) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setLoading(true));
+      await simulateDelay();
+
+      const newUser: UserItem = {
+        user_id: usersList.length ? Math.max(...usersList.map((u) => u.user_id)) + 1 : 1,
+        ...user,
+      };
+      usersList.push(newUser);
+      dispatch(successUsers());
+    } catch (error: any) {
+      dispatch(errorUsers(error.message || "Failed to create user"));
     }
   };
 
 export const updateUser =
-  (id: number, user: Partial<User>) => async (dispatch: AppDispatch) => {
+  (user: Partial<UserItem> & { user_id: number }) => async (dispatch: AppDispatch) => {
     try {
       dispatch(setLoading(true));
-      const response = await apiClient.put(`/users/${id}`, user);
-      if (response.status == 200) {
-        dispatch(successUsers());
-      } else {
-        dispatch(errorUsers(response.data?.message || response.statusText));
-      }
+      await simulateDelay();
+
+      const idx = usersList.findIndex((u) => u.user_id === user.user_id);
+      if (idx !== -1) Object.assign(usersList[idx], user);
+      dispatch(successUsers());
     } catch (error: any) {
-      dispatch(errorUsers(error.response?.data?.message || error.message));
-    } finally {
-      dispatch(resetUsers())
+      dispatch(errorUsers(error.message || "Failed to update user"));
     }
   };
 
 export const deleteUser =
-  (id: number) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  (user_id: number) => async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       dispatch(setLoading(true));
-      const response = await apiClient.delete(`/users/${id}`);
-      if (response.status == 200) {
-        dispatch(successUsers());
-      } else {
-        dispatch(errorUsers(response.data?.message || response.statusText));
-      }
+      await simulateDelay();
+
+      const idx = usersList.findIndex((u) => u.user_id === user_id);
+      if (idx !== -1) usersList.splice(idx, 1);
+      dispatch(successUsers());
 
       const state = getState();
-      const lastParams = (state.users as any)?.params || {};
-
-      dispatch(fetchUsers(lastParams));
+      dispatch(fetchUsers(state.users.params));
     } catch (error: any) {
-      dispatch(errorUsers(error.response?.data?.message || error.message));
+      dispatch(errorUsers(error.message || "Failed to delete user"));
     }
   };

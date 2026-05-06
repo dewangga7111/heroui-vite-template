@@ -1,10 +1,10 @@
-// src/redux/slices/users-slice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "@/types/users";
+import { UserItem } from "@/dummy/users";
 import { TableFilter, TablePaging } from "@/types/table";
 
 interface UsersState {
-  data: User[];
+  data: UserItem[];
+  detail: Partial<UserItem>;
   params: TableFilter;
   paging: TablePaging;
   loading: boolean;
@@ -14,16 +14,12 @@ interface UsersState {
 
 const initialState: UsersState = {
   data: [],
+  detail: {},
   params: {},
-  paging: {
-    page: 1,
-    totalPage: 1,
-    totalRows: 0,
-    limit: 10,
-  },
+  paging: { page: 1, totalPage: 1, totalRows: 0, limit: 10 },
   loading: false,
   success: false,
-  error: '',
+  error: "",
 };
 
 const usersSlice = createSlice({
@@ -33,21 +29,19 @@ const usersSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setDetail: (state, action: PayloadAction<Partial<UserItem>>) => {
+      state.detail = action.payload;
+      state.loading = false;
+    },
     setUsers: (
       state,
-      action: PayloadAction<{
-        data?: User[],
-        params?: TableFilter,
-        paging?: TablePaging;
-      }>
+      action: PayloadAction<{ data?: UserItem[]; params?: TableFilter; paging?: TablePaging }>
     ) => {
-      if (action.payload.data !== undefined) {
-        state.data = action.payload.data
-      };
+      if (action.payload.data !== undefined) state.data = action.payload.data;
       if (action.payload.params !== undefined) state.params = action.payload.params;
       if (action.payload.paging !== undefined) state.paging = action.payload.paging;
       state.loading = false;
-      state.error = '';
+      state.error = "";
     },
     errorUsers: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
@@ -59,11 +53,12 @@ const usersSlice = createSlice({
     },
     resetUsers: (state) => {
       state.success = false;
-      state.error = '';
+      state.error = "";
     },
     clearUsers: () => initialState,
   },
 });
 
-export const { setLoading, setUsers, successUsers, errorUsers, resetUsers, clearUsers } = usersSlice.actions;
+export const { setLoading, setDetail, setUsers, successUsers, errorUsers, resetUsers, clearUsers } =
+  usersSlice.actions;
 export default usersSlice.reducer;

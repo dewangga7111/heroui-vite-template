@@ -1,53 +1,45 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { permissionList, Permission } from "@/dummy/permission";
-import constants from "@/utils/constants";
+import { createContext, useContext } from "react";
+import { useAppSelector } from "@/redux/hooks";
+import { ProfileAccess } from "@/utils/auth";
 
 type PermissionContextType = {
-  permissions: Permission[];
-  canRead: (pageId: string) => boolean;
-  canCreate: (pageId: string) => boolean;
-  canUpdate: (pageId: string) => boolean;
-  canDelete: (pageId: string) => boolean;
-  hasPermission: (pageId: string, action: string) => boolean;
+  permissions: ProfileAccess[];
+  canRead: (path: string) => boolean;
+  canCreate: (path: string) => boolean;
+  canUpdate: (path: string) => boolean;
+  canDelete: (path: string) => boolean;
+  hasPermission: (menuKey: number | string, action: string) => boolean;
 };
 
 const PermissionContext = createContext<PermissionContextType | undefined>(undefined);
 
-// context ini untuk menyediakan permission untuk kebutuhan penjagaan
 export const PermissionProvider = ({ children }: { children: React.ReactNode }) => {
-  const [permissions, setPermissions] = useState<Permission[]>([]);
+  const profile = useAppSelector((s) => s.auth.profile);
+  const permissions = profile?.role?.access ?? [];
 
-  // Load permissions once
-  useEffect(() => {
-    const stored = localStorage.getItem("permissions");
-    if (stored) {
-      setPermissions(JSON.parse(stored));
-    } else {
-      // default simulated permissions
-      setPermissions(permissionList);
-    }
-  }, []);
+  // allow everything when profile not loaded yet, or when access list is empty (admin/mock)
+  const noProfile = !profile || permissions.length === 0;
 
-  const hasPermission = (pageId: string, action: string) => {
-    const perm = permissions.find(p => p.function_id === pageId);
-    if (!perm) return false;
-    return (perm as any)[action] === 'Y';
+  const find = (path: string) => permissions.find((p) => p.path === path);
+
+  const canRead = (path: string) => noProfile || (find(path)?.is_read ?? false);
+  const canCreate = (path: string) => noProfile || (find(path)?.is_create ?? false);
+  const canUpdate = (path: string) => noProfile || (find(path)?.is_update ?? false);
+  const canDelete = (path: string) => noProfile || (find(path)?.is_delete ?? false);
+
+  const hasPermission = (menuKey: number | string, action: string) => {
+    if (noProfile) return true;
+    const access = permissions.find((p) => p.id === Number(menuKey));
+    if (!access) return false;
+    if (action === "read") return access.is_read;
+    if (action === "create") return access.is_create;
+    if (action === "update") return access.is_update;
+    if (action === "delete") return access.is_delete;
+    return false;
   };
 
-  const canRead = (pageId: string) => hasPermission(pageId, constants.permission.READ);
-  const canCreate = (pageId: string) => hasPermission(pageId, constants.permission.CREATE);
-  const canUpdate = (pageId: string) => hasPermission(pageId, constants.permission.UPDATE);
-  const canDelete = (pageId: string) => hasPermission(pageId, constants.permission.DELETE);
-
   return (
-    <PermissionContext.Provider value={{
-      permissions,
-      hasPermission,
-      canRead,
-      canCreate,
-      canUpdate,
-      canDelete
-    }}>
+    <PermissionContext.Provider value={{ permissions, canRead, canCreate, canUpdate, canDelete, hasPermission }}>
       {children}
     </PermissionContext.Provider>
   );

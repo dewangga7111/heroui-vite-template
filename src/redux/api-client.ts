@@ -1,5 +1,6 @@
-// src/redux/api-client.ts
 import { showErrorToast } from "@/utils/common";
+import { getAccessToken, clearAuthSession } from "@/utils/auth";
+import { navigateTo } from "@/utils/navigate";
 import axios from "axios";
 
 export const apiClient = axios.create({
@@ -9,20 +10,23 @@ export const apiClient = axios.create({
   },
 });
 
-// ✅ Optional: intercept requests to attach auth token
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = getAccessToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-// ✅ Optional: global error handling
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message = `API error: ${error.response?.data || error.message}`;
+    if (error.response?.status === 401) {
+      clearAuthSession();
+      navigateTo("/auth/login");
+      return Promise.reject(error);
+    }
+    const message = `API error: ${error.response?.data?.response_message || error.message}`;
     console.error(message);
     showErrorToast(message);
     return Promise.reject(error);

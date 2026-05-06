@@ -1,23 +1,18 @@
-
-import {
-  Button,
-  getKeyValue,
-  Listbox,
-  ListboxItem,
-} from "@heroui/react";
+import { Button, getKeyValue, Listbox, ListboxItem } from "@heroui/react";
 import { EllipsisVertical, Trash2, Pencil, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import constants from "@/utils/constants";
 import { RenderCellProps } from "@/types/table";
-import { showSuccessToast } from "@/utils/common";
 import { useConfirmation } from "@/contexts/confirmation-context";
 import { ManagedPopover } from "@/components/popover/managed-popover";
+import { useAppDispatch } from "@/redux/hooks";
+import { deleteRole } from "@/pages/roles/store/api";
 
 export default function RolesRenderCell({ item, columnKey }: RenderCellProps) {
   const key = String(columnKey);
   const cellValue = getKeyValue(item, key);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { confirm } = useConfirmation();
 
   switch (key) {
@@ -25,32 +20,24 @@ export default function RolesRenderCell({ item, columnKey }: RenderCellProps) {
       return (
         <ManagedPopover
           placement="right"
-          trigger={ 
-            <Button
-              variant="light"
-              size="sm"
-              isIconOnly
-            >
+          trigger={
+            <Button variant="light" size="sm" isIconOnly>
               <EllipsisVertical size={18} />
             </Button>
           }
         >
-          <Listbox aria-label="User actions" variant="flat">
+          <Listbox aria-label="Role actions" variant="flat">
             <ListboxItem
               key="permission"
-              startContent={<Lock size={13}/>}
-              onPress={() => {
-                navigate(`${constants.path.ROLES}/permission/${item.id}`);
-              }}
+              startContent={<Lock size={13} />}
+              onPress={() => navigate(`/roles/permission/${item.id}`)}
             >
               Permission
             </ListboxItem>
             <ListboxItem
               key="edit"
-              startContent={<Pencil size={13}/>}
-              onPress={() => {
-                navigate(`${constants.path.ROLES}/edit/${item.id}`);
-              }}
+              startContent={<Pencil size={13} />}
+              onPress={() => navigate(`/roles/edit/${item.id}`)}
             >
               Edit
             </ListboxItem>
@@ -58,15 +45,13 @@ export default function RolesRenderCell({ item, columnKey }: RenderCellProps) {
               key="delete"
               className="text-danger"
               color="danger"
-              startContent={<Trash2 size={13}/>}
-              onPress={() => {
+              startContent={<Trash2 size={13} />}
+              onPress={() =>
                 confirm({
-                  message: constants.confirmation.DELETE,
-                  onConfirm: () => {
-                    showSuccessToast(constants.toast.SUCCESS_DELETE);
-                  },
-                });
-              }}
+                  message: "Are you sure you want to delete this data?",
+                  onConfirm: () => dispatch(deleteRole(item.id)),
+                })
+              }
             >
               Delete
             </ListboxItem>

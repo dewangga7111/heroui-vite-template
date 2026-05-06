@@ -6,75 +6,74 @@ import AppTextInput from "@/components/forms/app-text-input";
 import AppTextInputPassword from "@/components/forms/app-text-input-password";
 import { Button, Card, CardBody, Form } from "@heroui/react";
 import Footer from "@/components/footer";
-import { showSuccessToast, showErrorToast } from "@/utils/common";
+import { showErrorToast, showSuccessToast } from "@/utils/common";
 import { isMobile } from "react-device-detect";
-import constants from "@/utils/constants";
 import { ShinyText, BlurText, SplitText } from "@/components/text-animations";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { login, getProfile } from "@/pages/auth/store/api";
+import { resetAuth } from "@/pages/auth/store/reducer";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { loading, success, error } = useAppSelector((s) => s.auth);
   const [mounted, setMounted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => setMounted(true), []);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = Object.fromEntries(new FormData(e.currentTarget));
-
-    setIsLoading(true);
-    try {
-      // Mock login - simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Mock validation
-      if (formData.user_id === "admin" && formData.password === "admin") {
-        showSuccessToast(constants.toast.SUCCESS_LOGIN);
-
-        // Store auth data in localStorage
-        localStorage.setItem("isAuthenticated", "true");
-
-        navigate(constants.path.DASHBOARD);
-      } else {
-        showErrorToast("Invalid credentials. Try admin/admin");
-      }
-    } catch (error: any) {
-      showErrorToast(error.message || "Login failed");
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (success) {
+      showSuccessToast("Login Successfully");
+      dispatch(resetAuth());
+      dispatch(getProfile());
+      navigate("/");
     }
+  }, [success]);
+
+  useEffect(() => {
+    if (error) {
+      showErrorToast(error);
+      dispatch(resetAuth());
+    }
+  }, [error]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(login({ username, password }));
   };
 
-  const form = () => {
-    return (
-      <Form onSubmit={handleSubmit}>
-        <AppTextInput
-          isRequired
-          key="user_id"
-          name="user_id"
-          label="User ID"
-          isDisabled={isLoading}
-        />
-        <AppTextInputPassword
-          isRequired
-          key="password"
-          name="password"
-          label="Password"
-          isDisabled={isLoading}
-        />
-        <Button
-          type="submit"
-          color="primary"
-          className="w-full mt-5"
-          startContent={<LogIn size={15} />}
-          isLoading={isLoading}
-          isDisabled={isLoading}
-        >
-          Login
-        </Button>
-      </Form>
-    );
-  };
+  const form = () => (
+    <Form onSubmit={handleSubmit}>
+      <AppTextInput
+        isRequired
+        name="username"
+        label="Username"
+        value={username}
+        onValueChange={setUsername}
+        isDisabled={loading}
+      />
+      <AppTextInputPassword
+        isRequired
+        name="password"
+        label="Password"
+        value={password}
+        onValueChange={setPassword}
+        isDisabled={loading}
+      />
+      <Button
+        type="submit"
+        color="primary"
+        className="w-full mt-5"
+        startContent={<LogIn size={15} />}
+        isLoading={loading}
+        isDisabled={loading}
+      >
+        Login
+      </Button>
+    </Form>
+  );
 
   if (!mounted) return null;
 
@@ -92,7 +91,7 @@ export default function LoginPage() {
               Welcome Back
             </ShinyText>
             <span className="text-sm text-default-600 mt-3">
-              Enter your user ID and password to access your account
+              Enter your username and password to access your account
             </span>
           </div>
           {form()}
@@ -121,12 +120,8 @@ export default function LoginPage() {
               </div>
             </div>
             <div className="absolute bottom-8 left-8 right-8 text-white/90 text-sm z-10">
-              <p className="font-medium">
-                Modern Admin Template
-              </p>
-              <p className="text-white/70 mt-1">
-                Built with React, TypeScript, and HeroUI
-              </p>
+              <p className="font-medium">Modern Admin Template</p>
+              <p className="text-white/70 mt-1">Built with React, TypeScript, and HeroUI</p>
             </div>
           </div>
           <div className="flex flex-col flex-1">
@@ -136,7 +131,7 @@ export default function LoginPage() {
                   Welcome Back
                 </ShinyText>
                 <span className="text-sm text-default-600 mt-3">
-                  Enter your user ID and password to access your account
+                  Enter your username and password to access your account
                 </span>
               </div>
               {form()}

@@ -1,8 +1,8 @@
-import { Home, Settings, LogOut } from "lucide-react";
+import { Home, Database } from "lucide-react";
 import { ReactNode } from "react";
 
 type MenuItem = {
-  key: string;
+  key?: number;
   label: string;
   path?: string;
   icon?: ReactNode;
@@ -11,32 +11,25 @@ type MenuItem = {
 
 export const menus: MenuItem[] = [
   {
-    key: "DASHBOARD_PAGE",
+    key: 1,
     label: "Dashboard",
     icon: <Home size={18} />,
     path: "/",
   },
   {
-    key: "settings",
-    label: "Settings",
-    icon: <Settings size={18} />,
+    label: "Master",
+    icon: <Database size={18} />,
     children: [
       {
-        key: "USERS_PAGE",
+        key: 2,
         label: "Users",
         path: "/users",
       },
       {
-        key: "ROLES_PAGE",
+        key: 3,
         label: "Roles",
         path: "/roles",
       },
     ],
-  },
-  {
-    key: "logout",
-    label: "Logout",
-    icon: <LogOut size={18} />,
-    path: "/logout",
   },
 ];

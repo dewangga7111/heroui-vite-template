@@ -32,6 +32,7 @@ export default function Datatable({
   totalRows = 0,
   onPageChange,
   doAdd,
+  topContent: topContentProp,
 }: DynamicTableProps) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -41,7 +42,7 @@ export default function Datatable({
     ...columns,
   ];
 
-  const topContent = React.useMemo(() => (
+  const defaultTopContent = React.useMemo(() => (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end gap-3 items-end">
         <Button onPress={doAdd} color="primary" className={button()} startContent={<PlusIcon />}>
@@ -50,6 +51,8 @@ export default function Datatable({
       </div>
     </div>
   ), [doAdd]);
+
+  const topContent = topContentProp ?? (doAdd ? defaultTopContent : null);
 
   const startRow = totalRows === 0 ? 0 : (page - 1) * 10 + 1;
   const endRow = Math.min(page * 10, totalRows);
