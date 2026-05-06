@@ -126,7 +126,7 @@ export const Navbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {
               }
             >
               <Listbox aria-label="User actions" variant="flat">
-                <ListboxItem key="profile" startContent={<User size={13} />} onPress={() => {}}>
+                <ListboxItem key="profile" startContent={<User size={13} />} onPress={() => { }}>
                   Profile
                 </ListboxItem>
                 <ListboxItem
@@ -169,7 +169,7 @@ export const Navbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {
           <DrawerContent>
             {(onClose) => (
               <DrawerBody>
-                <SidebarContent open={true} setOpen={() => {}} onClose={onClose} />
+                <SidebarContent open={true} setOpen={() => { }} onClose={onClose} />
               </DrawerBody>
             )}
           </DrawerContent>

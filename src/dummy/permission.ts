@@ -9,5 +9,6 @@ export type Permission = {
 export const permissionList: Permission[] = [
   { function_id: "HOME_PAGE", read: "Y", create: "Y", update: "Y", delete: "Y" },
   { function_id: "USERS_PAGE", read: "Y", create: "Y", update: "Y", delete: "Y" },
-  { function_id: "ROLES_PAGE", read: "Y", create: "Y", update: "Y", delete: "Y" }
+  { function_id: "ROLES_PAGE", read: "Y", create: "Y", update: "Y", delete: "Y" },
+  { function_id: "GROUPS_PAGE", read: "Y", create: "Y", update: "Y", delete: "Y" }
 ]
