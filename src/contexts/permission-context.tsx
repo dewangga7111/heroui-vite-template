@@ -38,11 +38,6 @@ export const PermissionProvider = ({ children }: { children: React.ReactNode }) 
     return false;
   };
 
-  const canRead = (pageId: string) => hasPermission(pageId, "read");
-  const canCreate = (pageId: string) => hasPermission(pageId, "create");
-  const canUpdate = (pageId: string) => hasPermission(pageId, "update");
-  const canDelete = (pageId: string) => hasPermission(pageId, "delete");
-
   return (
     <PermissionContext.Provider value={{ permissions, canRead, canCreate, canUpdate, canDelete, hasPermission }}>
       {children}

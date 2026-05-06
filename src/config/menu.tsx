@@ -17,15 +17,8 @@ export const menus: MenuItem[] = [
     path: "/",
   },
   {
-    key: "GROUPS_PAGE",
-    label: "Groups",
-    icon: <Layers size={18} />,
-    path: "/groups",
-  },
-  {
-    key: "settings",
-    label: "Settings",
-    icon: <Settings size={18} />,
+    label: "Master",
+    icon: <Database size={18} />,
     children: [
       {
         key: 2,
