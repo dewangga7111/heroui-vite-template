@@ -1,13 +1,45 @@
 @import "tailwindcss";
+@import "@heroui/styles";
 
 @config "../../tailwind.config.js";
 
 @theme {
-  --breakpoint-3xl: 120rem;
+	--breakpoint-3xl: 120rem;
+
+	/* Custom primary color scale (violet/purple) */
+	--color-primary-50: #f5f3ff;
+	--color-primary-100: #ede9fe;
+	--color-primary-200: #ddd6fe;
+	--color-primary-300: #c4b5fd;
+	--color-primary-400: #a78bfa;
+	--color-primary-500: #8b5cf6;
+	--color-primary-600: #7c3aed;
+	--color-primary-700: #6d28d9;
+	--color-primary-800: #5b21b6;
+	--color-primary-900: #4c1d95;
+	--color-primary: #7c3aed;
 }
 
-.heroui-popover[aria-hidden="false"] {
-  z-index: 1000 !important; /* ensure popovers are below modals */
+/* Override HeroUI primary color CSS variables */
+
+:root {
+	/* HeroUI v3 semantic tokens — controls component colors (buttons, inputs, etc.) */
+	--accent: oklch(57.69% 0.246 293.94); /* violet-600 = #7c3aed */
+	--accent-foreground: oklch(100% 0 0); /* white */
+
+	/* Tailwind primary palette — for bg-primary, text-primary, from-primary, etc. */
+	--heroui-primary-50: 245 243 255;
+	--heroui-primary-100: 237 233 254;
+	--heroui-primary-200: 221 214 254;
+	--heroui-primary-300: 196 181 253;
+	--heroui-primary-400: 167 139 250;
+	--heroui-primary-500: 139 92 246;
+	--heroui-primary-600: 124 58 237;
+	--heroui-primary: 124 58 237;
+	--heroui-primary-700: 109 40 217;
+	--heroui-primary-800: 91 33 182;
+	--heroui-primary-900: 76 29 149;
+	--heroui-primary-foreground: 255 255 255;
 }
 
 /* Text Animation Styles */
@@ -16,19 +48,19 @@
 .split-word,
 .split-line,
 .blur-char {
-  display: inline-block;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transform: translate3d(0, 0, 0);
-  will-change: transform, opacity, filter;
+	display: inline-block;
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	transform: translate3d(0, 0, 0);
+	will-change: transform, opacity, filter;
 }
 
 /* Parent container optimization */
 .split-parent {
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-transform: translateZ(0);
 }
 
 /* Prevent text selection during animation */
@@ -36,8 +68,8 @@
 .split-word,
 .split-line,
 .blur-char {
-  user-select: none;
-  -webkit-user-select: none;
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 /* After animation completes, remove will-change */
@@ -45,9 +77,9 @@
 .split-word.animated,
 .split-line.animated,
 .blur-char.animated {
-  will-change: auto;
+	will-change: auto;
 }
 
 header {
-  padding-inline: 5px;
+	padding-inline: 5px;
 }

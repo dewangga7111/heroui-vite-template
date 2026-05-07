@@ -11,7 +11,7 @@ export default function Page403() {
       <h1 className="text-4xl font-bold">403 - Forbidden</h1>
       <p className="text-default-500">You don't have permission to access this page.</p>
       <Button
-        color="primary"
+        variant="primary"
         onPress={() => navigate("/")}
       >
         Go to Dashboard

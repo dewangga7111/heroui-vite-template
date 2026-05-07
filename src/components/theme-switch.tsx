@@ -1,99 +1,59 @@
-
 import { FC } from "react";
 import { VisuallyHidden } from "@react-aria/visually-hidden";
-import { SwitchProps, useSwitch } from "@heroui/switch";
 import { useTheme } from "next-themes";
 import { useIsSSR } from "@react-aria/ssr";
 import { Tooltip } from "@heroui/react";
 import clsx from "clsx";
 import { Moon, Sun } from "lucide-react";
+
 export interface ThemeSwitchProps {
   className?: string;
-  classNames?: SwitchProps["classNames"];
 }
 
-export const ThemeSwitch: FC<ThemeSwitchProps> = ({
-  className,
-  classNames,
-}) => {
+export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className }) => {
   const { theme, setTheme } = useTheme();
   const isSSR = useIsSSR();
 
-  const onChange = () => {
-    theme === "light" ? setTheme("dark") : setTheme("light");
+  const isLight = theme === "light" || isSSR;
+
+  const handleToggle = () => {
+    setTheme(isLight ? "dark" : "light");
   };
 
-  const {
-    Component,
-    slots,
-    isSelected,
-    getBaseProps,
-    getInputProps,
-    getWrapperProps,
-  } = useSwitch({
-    isSelected: theme === "light" || isSSR,
-    "aria-label": `Switch to ${theme === "light" || isSSR ? "dark" : "light"} mode`,
-    onChange,
-  });
-
   return (
-    <Component
-      {...getBaseProps({
-        className: clsx(
-          "px-px transition-opacity hover:opacity-80 cursor-pointer",
-          className,
-          classNames?.base,
-        ),
-      })}
+    <button
+      type="button"
+      onClick={handleToggle}
+      className={clsx(
+        "inline-flex items-center justify-center transition-opacity hover:opacity-80 cursor-pointer bg-transparent border-none outline-none",
+        className,
+      )}
+      aria-label={`Switch to ${isLight ? "dark" : "light"} mode`}
     >
       <VisuallyHidden>
-        <input {...getInputProps()} />
+        <input
+          type="checkbox"
+          checked={!isLight}
+          onChange={handleToggle}
+          aria-label="Toggle theme"
+          readOnly
+        />
       </VisuallyHidden>
-      <div
-        {...getWrapperProps()}
-        className={slots.wrapper({
-          class: clsx(
-            [
-              "w-auto h-auto",
-              "bg-transparent",
-              "rounded-lg",
-              "flex items-center justify-center",
-              "group-data-[selected=true]:bg-transparent",
-              "!text-default-500",
-              "pt-px",
-              "px-0",
-              "mx-0",
-            ],
-            classNames?.wrapper,
-          ),
-        })}
-      >
-        {!isSelected || isSSR ? (
-          <Tooltip
-            content="Light Mode"
-            showArrow={true}
-            placement="bottom"
-            color="foreground"
-            closeDelay={0}
-            delay={500}
-            size="sm"
-          >
-            <Sun size={22} />
-          </Tooltip>
-        ) : (
-          <Tooltip
-            content="Dark Mode"
-            showArrow={true}
-            placement="bottom"
-            color="foreground"
-            closeDelay={0}
-            delay={500}
-            size="sm"
-          >
-            <Moon size={22} />
-          </Tooltip>
-        )}
-      </div>
-    </Component>
+      {isLight ? (
+        <Tooltip delay={500} closeDelay={0}>
+          <Tooltip.Trigger>
+            <Sun size={22} className="text-default-500" />
+          </Tooltip.Trigger>
+          <Tooltip.Content showArrow placement="bottom">Light Mode</Tooltip.Content>
+        </Tooltip>
+      ) : (
+        <Tooltip delay={500} closeDelay={0}>
+          <Tooltip.Trigger>
+            <Moon size={22} className="text-default-500" />
+          </Tooltip.Trigger>
+          <Tooltip.Content showArrow placement="bottom">Dark Mode</Tooltip.Content>
+        </Tooltip>
+      )}
+    </button>
   );
 };

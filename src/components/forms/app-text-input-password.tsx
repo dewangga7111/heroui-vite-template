@@ -1,32 +1,45 @@
+import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
+import { Button, InputGroup, Label, TextField, FieldError } from '@heroui/react';
+import type { TextFieldRootProps } from '@heroui/react';
+import type { ReactNode } from 'react';
 
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-import AppTextInput from "./app-text-input";
-import { InputProps } from "@heroui/react";
+interface AppTextInputPasswordProps extends Omit<TextFieldRootProps, 'children'> {
+  label?: string;
+  placeholder?: string;
+  errorMessage?: ReactNode;
+}
 
-export default function AppTextInputPassword(props: InputProps) {
+export default function AppTextInputPassword({
+  label,
+  placeholder,
+  errorMessage,
+  className,
+  ...props
+}: AppTextInputPasswordProps) {
   const [isVisible, setIsVisible] = useState(false);
 
-  const toggleVisibility = () => setIsVisible(!isVisible);
-
   return (
-    <AppTextInput
-      {...props}
-      type={isVisible ? "text" : "password"}
-      endContent={
-        <button
-          aria-label="toggle password visibility"
-          className="focus:outline-solid outline-transparent"
-          type="button"
-          onClick={toggleVisibility}
-        >
-          {isVisible ? (
-            <EyeOff className="text-2xl text-default-400 pointer-events-none" />
-          ) : (
-            <Eye className="text-2xl text-default-400 pointer-events-none" />
-          )}
-        </button>
-      }
-    />
+    <TextField variant='secondary' className={`flex flex-col gap-1 w-full ${className ?? ''}`} {...props}>
+      {label && <Label>{label}</Label>}
+      <InputGroup>
+        <InputGroup.Input
+          type={isVisible ? 'text' : 'password'}
+          {...(placeholder !== undefined ? { placeholder } : {})}
+        />
+        <InputGroup.Suffix className="pr-0">
+          <Button
+            isIconOnly
+            aria-label={isVisible ? 'Hide password' : 'Show password'}
+            size="sm"
+            variant="secondary"
+            onPress={() => setIsVisible((v) => !v)}
+          >
+            {isVisible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+          </Button>
+        </InputGroup.Suffix>
+      </InputGroup>
+      <FieldError>{errorMessage}</FieldError>
+    </TextField>
   );
 }

@@ -5,7 +5,7 @@ import { Button } from "@heroui/react";
 import { PlusIcon } from "lucide-react";
 
 import Datatable from "@/components/data-table/datatable";
-import Filter from "@/components/filters/filter";
+import Filter from "@/components/data-table/filter";
 import { TableColumnType, TableRowType } from "@/types/table";
 import { FilterField } from "@/types/filter";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -68,7 +68,7 @@ export default function UsersPage() {
         onPageChange={(page: number) => dispatch(fetchUsers({ ...store.params, page }))}
         topContent={
           <div className="flex justify-end">
-            <Button color="primary" className={button()} startContent={<PlusIcon size={16} />} onPress={() => navigate("/users/add")}>
+            <Button variant="primary" className={button()} onPress={() => navigate("/users/add")}><PlusIcon size={16} />
               Add
             </Button>
           </div>

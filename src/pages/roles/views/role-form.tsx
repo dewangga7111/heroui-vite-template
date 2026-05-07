@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, CardBody, Form } from "@heroui/react";
+import { Button, Card, Form } from "@heroui/react";
 import { Save } from "lucide-react";
 
 import AppTextInput from "@/components/forms/app-text-input";
@@ -65,8 +65,8 @@ export default function RoleFormPage({ isEdit = false }: RoleFormPageProps) {
 
   return (
     <div>
-      <Card className="px-1">
-        <CardBody>
+      <Card>
+        <Card.Content>
           <Form onSubmit={handleSubmit}>
             <div className={form()}>
               <div className={inputContainer()}>
@@ -84,16 +84,17 @@ export default function RoleFormPage({ isEdit = false }: RoleFormPageProps) {
                 />
               </div>
               <div className={actionButtons()}>
-                <Button type="button" color="primary" variant="flat" className={button()} onPress={() => navigate(-1)}>
+                <Button type="button" variant="secondary" className={button()} onPress={() => navigate(-1)}>
                   Back
                 </Button>
-                <Button type="submit" color="primary" className={button()} startContent={<Save size={15} />}>
+                <Button type="submit" variant="primary" className={button()}>
+                  <Save size={15} />
                   {isEdit ? "Update" : "Save"}
                 </Button>
               </div>
             </div>
           </Form>
-        </CardBody>
+        </Card.Content>
       </Card>
     </div>
   );

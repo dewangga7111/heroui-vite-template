@@ -1,107 +1,110 @@
-import { useState, useEffect } from "react";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  RangeCalendar,
-} from "@heroui/react";
-import { CalendarDays } from "lucide-react";
-import { parseDate, getLocalTimeZone } from "@internationalized/date";
-import { format } from "date-fns";
-import AppTextInput from "./app-text-input";
+import { useState, useEffect } from 'react';
+import { DateField, DateRangePicker, RangeCalendar, Label } from '@heroui/react';
+import { parseDate, getLocalTimeZone } from '@internationalized/date';
+import { format } from 'date-fns';
+import type { DateValue } from '@internationalized/date';
+import type { RangeValue } from 'react-aria-components';
 
 type DateRangeValue = {
   start: string | null;
   end: string | null;
 };
 
-type DateRangeInputProps = {
+type AppDateRangePickerProps = {
   label?: string;
-  placeholder?: string;
   value?: DateRangeValue | null;
   onChange?: (val: DateRangeValue | null) => void;
+  isRequired?: boolean;
+  isDisabled?: boolean;
 };
 
 export default function AppDateRangePicker({
-  label = "Date Range",
-  placeholder = "DD-MM-YYYY - DD-MM-YYYY",
+  label,
   value,
   onChange,
-}: DateRangeInputProps) {
-  const [open, setOpen] = useState(false);
-  const [selectedRange, setSelectedRange] = useState<DateRangeValue | null>(
-    value || null
-  );
+  isRequired,
+  isDisabled,
+}: AppDateRangePickerProps) {
+  const toRangeValue = (v: DateRangeValue | null | undefined): RangeValue<DateValue> | null => {
+    if (!v?.start || !v?.end) return null;
+    try {
+      return {
+        start: parseDate(v.start.split('-').reverse().join('-')),
+        end: parseDate(v.end.split('-').reverse().join('-')),
+      };
+    } catch {
+      return null;
+    }
+  };
 
-  // ✅ Sync internal state when parent clears or updates value
+  const [rangeValue, setRangeValue] = useState<RangeValue<DateValue> | null>(toRangeValue(value));
+
   useEffect(() => {
-    setSelectedRange(value || null);
+    setRangeValue(toRangeValue(value));
   }, [value]);
 
-  const formatDate = (date: any) => {
-    if (!date) return null;
-    const jsDate = date.toDate(getLocalTimeZone());
-    return format(jsDate, "dd-MM-yyyy");
+  const handleChange = (val: RangeValue<DateValue> | null) => {
+    setRangeValue(val);
+    if (val?.start && val?.end) {
+      onChange?.({
+        start: format(val.start.toDate(getLocalTimeZone()), 'dd-MM-yyyy'),
+        end: format(val.end.toDate(getLocalTimeZone()), 'dd-MM-yyyy'),
+      });
+    } else {
+      onChange?.(null);
+    }
   };
-
-  const handleSelect = (range: any) => {
-    if (!range?.start || !range?.end) return;
-    const formatted = {
-      start: formatDate(range.start),
-      end: formatDate(range.end),
-    };
-    setSelectedRange(formatted);
-    onChange?.(formatted);
-    setOpen(false);
-  };
-
-  const displayValue =
-    selectedRange?.start && selectedRange?.end
-      ? `${selectedRange.start} - ${selectedRange.end}`
-      : "";
 
   return (
-    <div className="flex flex-col gap-1 relative">
-      <Popover isOpen={open} onOpenChange={setOpen} placement="bottom-start">
-        <div>
-          {/* transparent layer for opening popover */}
-          <PopoverTrigger>
-            <div className="w-full h-[40px] cursor-pointer absolute z-10 bottom-0"></div>
-          </PopoverTrigger>
-
-          <AppTextInput
-            label={label}
-            readOnly
-            placeholder={placeholder}
-            value={displayValue}
-            startContent={<CalendarDays size={18} />}
-            className="cursor-pointer"
-            classNames={{
-              input: "text-left ml-1",
-            }}
-          />
-        </div>
-
-        <PopoverContent className="p-0">
-          <RangeCalendar
-            aria-label="Select date range"
-            visibleMonths={2}
-            value={
-              selectedRange?.start && selectedRange?.end
-                ? {
-                  start: parseDate(
-                    selectedRange.start.split("-").reverse().join("-")
-                  ),
-                  end: parseDate(
-                    selectedRange.end.split("-").reverse().join("-")
-                  ),
-                }
-                : undefined
-            }
-            onChange={handleSelect}
-          />
-        </PopoverContent>
-      </Popover>
-    </div>
+    <DateRangePicker
+      className="flex flex-col gap-1 w-full"
+      value={rangeValue}
+      onChange={handleChange}
+      {...(isRequired !== undefined ? { isRequired } : {})}
+      {...(isDisabled !== undefined ? { isDisabled } : {})}
+    >
+      {label && <Label>{label}</Label>}
+      <DateField.Group fullWidth variant="secondary">
+        <DateField.InputContainer>
+          <DateField.Input slot="start">
+            {(segment) => <DateField.Segment segment={segment} />}
+          </DateField.Input>
+          <DateRangePicker.RangeSeparator />
+          <DateField.Input slot="end">
+            {(segment) => <DateField.Segment segment={segment} />}
+          </DateField.Input>
+        </DateField.InputContainer>
+        <DateField.Suffix>
+          <DateRangePicker.Trigger>
+            <DateRangePicker.TriggerIndicator />
+          </DateRangePicker.Trigger>
+        </DateField.Suffix>
+      </DateField.Group>
+      <DateRangePicker.Popover>
+        <RangeCalendar>
+          <RangeCalendar.Header>
+            <RangeCalendar.YearPickerTrigger>
+              <RangeCalendar.YearPickerTriggerHeading />
+              <RangeCalendar.YearPickerTriggerIndicator />
+            </RangeCalendar.YearPickerTrigger>
+            <RangeCalendar.NavButton slot="previous" />
+            <RangeCalendar.NavButton slot="next" />
+          </RangeCalendar.Header>
+          <RangeCalendar.Grid>
+            <RangeCalendar.GridHeader>
+              {(day) => <RangeCalendar.HeaderCell>{day}</RangeCalendar.HeaderCell>}
+            </RangeCalendar.GridHeader>
+            <RangeCalendar.GridBody>
+              {(date) => <RangeCalendar.Cell date={date} />}
+            </RangeCalendar.GridBody>
+          </RangeCalendar.Grid>
+          <RangeCalendar.YearPickerGrid>
+            <RangeCalendar.YearPickerGridBody>
+              {({ year }) => <RangeCalendar.YearPickerCell year={year} />}
+            </RangeCalendar.YearPickerGridBody>
+          </RangeCalendar.YearPickerGrid>
+        </RangeCalendar>
+      </DateRangePicker.Popover>
+    </DateRangePicker>
   );
 }

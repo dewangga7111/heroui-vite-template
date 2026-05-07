@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, CardBody, Form, Spinner } from "@heroui/react";
+import { Button, Card, Form, Spinner } from "@heroui/react";
 import { Save } from "lucide-react";
 
 import AppTextInput from "@/components/forms/app-text-input";
@@ -85,14 +85,14 @@ export default function UserFormPage({ isEdit = false }: UserFormPageProps) {
 
   if (fetching) return (
     <div className="flex justify-center items-center min-h-[40vh]">
-      <Spinner size="lg" variant="wave" />
+      <Spinner size="lg" className="block size-8" />
     </div>
   );
 
   return (
     <div>
-      <Card className="px-1">
-        <CardBody>
+      <Card>
+        <Card.Content>
           <Form onSubmit={handleSubmit}>
             <div className={form()}>
               <div className={inputContainer()}>
@@ -102,7 +102,7 @@ export default function UserFormPage({ isEdit = false }: UserFormPageProps) {
                   name="username"
                   label="Username"
                   defaultValue={store.detail?.username}
-                  validate={(v) => /\s/.test(v) ? "Username must not contain spaces" : true}
+                  validate={(v: string) => /\s/.test(v) ? "Username must not contain spaces" : true}
                 />
                 <AppTextInput isRequired name="user_code" label="User Code" defaultValue={store.detail?.user_code} />
                 <AppAutocomplete
@@ -121,20 +121,26 @@ export default function UserFormPage({ isEdit = false }: UserFormPageProps) {
                   label="Confirm Password"
                   isInvalid={!!passwordError}
                   errorMessage={passwordError}
-                  onValueChange={() => setPasswordError("")}
+                  onChange={() => setPasswordError("")}
                 />
               </div>
               <div className={actionButtons()}>
-                <Button type="button" color="primary" variant="flat" className={button()} onPress={() => navigate(-1)}>
+                <Button type="button" variant="secondary" className={button()} onPress={() => navigate(-1)}>
                   Back
                 </Button>
-                <Button type="submit" color="primary" className={button()} startContent={<Save size={15} />} isLoading={store.loading}>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  className={button()}
+                  isDisabled={store.loading}
+                >
+                  {store.loading ? <Spinner size="sm" className="block size-4" /> : <Save size={15} />}
                   {isEdit ? "Update" : "Save"}
                 </Button>
               </div>
             </div>
           </Form>
-        </CardBody>
+        </Card.Content>
       </Card>
     </div>
   );

@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader } from "@heroui/react";
+import { Card, CardContent, CardHeader } from "@heroui/react";
 
 export default function DashboardPage() {
   return (
@@ -7,25 +7,25 @@ export default function DashboardPage() {
         <CardHeader>
           <h2 className="text-xl font-bold">Welcome to HeroUI Admin</h2>
         </CardHeader>
-        <CardBody>
+        <CardContent>
           <p>This is the dashboard homepage.</p>
-        </CardBody>
+        </CardContent>
       </Card>
       <Card>
         <CardHeader>
           <h2 className="text-xl font-bold">Users</h2>
         </CardHeader>
-        <CardBody>
+        <CardContent>
           <p>Manage your users here.</p>
-        </CardBody>
+        </CardContent>
       </Card>
       <Card>
         <CardHeader>
           <h2 className="text-xl font-bold">Roles</h2>
         </CardHeader>
-        <CardBody>
+        <CardContent>
           <p>Manage roles and permissions.</p>
-        </CardBody>
+        </CardContent>
       </Card>
     </div>
   );

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import AppTextInput from "@/components/forms/app-text-input";
 import AppTextInputPassword from "@/components/forms/app-text-input-password";
-import { Button, Card, CardBody, Form } from "@heroui/react";
+import { Button, Card, Form, Spinner } from "@heroui/react";
 import Footer from "@/components/footer";
 import { showErrorToast, showSuccessToast } from "@/utils/common";
 import { isMobile } from "react-device-detect";
@@ -51,7 +51,7 @@ export default function LoginPage() {
         name="username"
         label="Username"
         value={username}
-        onValueChange={setUsername}
+        onChange={setUsername}
         isDisabled={loading}
       />
       <AppTextInputPassword
@@ -59,17 +59,16 @@ export default function LoginPage() {
         name="password"
         label="Password"
         value={password}
-        onValueChange={setPassword}
+        onChange={setPassword}
         isDisabled={loading}
       />
       <Button
         type="submit"
-        color="primary"
+        variant="primary"
         className="w-full mt-5"
-        startContent={<LogIn size={15} />}
-        isLoading={loading}
         isDisabled={loading}
       >
+        {loading ? <div className="flex items-center justify-center"><Spinner color="current" size="sm" className="block size-4" /></div> : <LogIn size={15} />}
         Login
       </Button>
     </Form>
@@ -103,8 +102,8 @@ export default function LoginPage() {
 
   return (
     <div className="flex justify-center items-center h-screen w-screen">
-      <Card className="max-w-6xl w-[90%] h-[70%] shadow-2xl">
-        <CardBody className="grid grid-cols-2 p-0 h-full">
+      <Card className="max-w-6xl w-[90%] h-[70%] shadow-2xl p-0">
+        <Card.Content className="grid grid-cols-2 gap-0 p-0 h-full">
           <div className="w-full h-full bg-gradient-to-br from-primary-600 via-primary-500 to-primary-300 rounded-l-xl relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
             <div className="absolute left-8 top-8 z-10">
@@ -138,7 +137,7 @@ export default function LoginPage() {
             </div>
             <Footer />
           </div>
-        </CardBody>
+        </Card.Content>
       </Card>
     </div>
   );

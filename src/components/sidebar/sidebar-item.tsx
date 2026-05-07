@@ -30,7 +30,7 @@ export default function SidebarMenuItem({
           )}
           <div
             onClick={() => toggleMenu(item.key)}
-            className={`flex items-center cursor-pointer p-3 my-1 mr-2 rounded-lg text-small w-[100%]
+            className={`flex items-center cursor-pointer p-3 my-1 mr-2 rounded-lg text-sm w-[100%]
               ${mounted && theme === "light" ? "hover:bg-primary-50 hover:text-primary-700" : "hover:bg-primary-700 hover:text-primary-50"}
               ${mounted && isActive && theme === "light"
                 ? "bg-primary-100 text-primary-700 font-semibold"
@@ -69,7 +69,7 @@ export default function SidebarMenuItem({
                 }}
               >
                 <div
-                  className={`flex py-2 px-3 my-1 items-center rounded-md cursor-pointer text-tiny mr-2
+                  className={`flex py-2 px-3 my-1 items-center rounded-md cursor-pointer text-xs mr-2
                     ${mounted && theme === "light" ? "hover:bg-primary-50 hover:text-primary-700" : "hover:bg-primary-700 hover:text-primary-50"}
                     ${mounted && pathname.startsWith(child.path) && theme === "light"
                       ? "bg-primary-100 text-primary-700 font-semibold"
@@ -105,7 +105,7 @@ export default function SidebarMenuItem({
         <div className="h-[30px] w-[5px] ml-2 mr-1"></div>
       )}
       <div
-        className={`flex p-3 my-1 items-center mr-2 w-[100%] rounded-lg cursor-pointer text-small
+        className={`flex p-3 my-1 items-center mr-2 w-[100%] rounded-lg cursor-pointer text-sm
           ${mounted && theme === "light" ? "hover:bg-primary-50 hover:text-primary-700" : "hover:bg-primary-700 hover:text-primary-50"}
           ${mounted && firstPath === item.path && theme === "light"
             ? "bg-primary-100 text-primary-700 font-semibold"

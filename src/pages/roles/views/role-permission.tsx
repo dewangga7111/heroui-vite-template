@@ -1,17 +1,5 @@
 
-import {
-  Button,
-  Card,
-  CardBody,
-  Form,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-} from "@heroui/react";
+import { Button, Card, Form, Switch, Table } from "@heroui/react";
 import { Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -53,12 +41,9 @@ export default function EditPermissionPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     confirm({
       message: "Are you sure you want to save this data?",
-      onConfirm: () => {
-        doSave();
-      },
+      onConfirm: () => doSave(),
     });
   };
 
@@ -70,76 +55,76 @@ export default function EditPermissionPage() {
 
   return (
     <div>
-      <Card className="px-1">
-        <CardBody>
+      <Card>
+        <Card.Content>
           <span className="text-lg">Role: <span className="font-medium">Admin</span></span>
 
           <Form className="mt-3" onSubmit={handleSubmit}>
             <div className={form()}>
-              <Table removeWrapper aria-label="Permissions table">
-                <TableHeader>
-                  <TableColumn>Menu</TableColumn>
-                  <TableColumn width={150} align="center">Read</TableColumn>
-                  <TableColumn width={150} align="center">Add</TableColumn>
-                  <TableColumn width={150} align="center">Edit</TableColumn>
-                  <TableColumn width={150} align="center">Delete</TableColumn>
-                </TableHeader>
+              <Table variant="secondary">
+                <Table.Content>
+                  <Table.Header>
+                    <Table.Column id="menu">Menu</Table.Column>
+                    <Table.Column id="read" style={{ width: "150px", textAlign: "center" }}>Read</Table.Column>
+                    <Table.Column id="add" style={{ width: "150px", textAlign: "center" }}>Add</Table.Column>
+                    <Table.Column id="edit" style={{ width: "150px", textAlign: "center" }}>Edit</Table.Column>
+                    <Table.Column id="delete" style={{ width: "150px", textAlign: "center" }}>Delete</Table.Column>
+                  </Table.Header>
 
-                <TableBody>
-                  {permissions.map((menu) => (
-                    <TableRow key={menu.id}>
-                      <TableCell>{menu.name}</TableCell>
-                      <TableCell>
-                        <Switch
-                          isSelected={menu.read}
-                          onValueChange={() => handleToggle(menu.id, "read")}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Switch
-                          isSelected={menu.add}
-                          onValueChange={() => handleToggle(menu.id, "add")}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Switch
-                          isSelected={menu.edit}
-                          onValueChange={() => handleToggle(menu.id, "edit")}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Switch
-                          isSelected={menu.delete}
-                          onValueChange={() => handleToggle(menu.id, "delete")}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
+                  <Table.Body>
+                    {permissions.map((menu) => (
+                      <Table.Row key={menu.id}>
+                        <Table.Cell>{menu.name}</Table.Cell>
+                        <Table.Cell style={{ textAlign: "center" }}>
+                          <Switch
+                            isSelected={menu.read}
+                            onChange={() => handleToggle(menu.id, "read")}
+                          >
+                            <Switch.Control><Switch.Thumb /></Switch.Control>
+                          </Switch>
+                        </Table.Cell>
+                        <Table.Cell style={{ textAlign: "center" }}>
+                          <Switch
+                            isSelected={menu.add}
+                            onChange={() => handleToggle(menu.id, "add")}
+                          >
+                            <Switch.Control><Switch.Thumb /></Switch.Control>
+                          </Switch>
+                        </Table.Cell>
+                        <Table.Cell style={{ textAlign: "center" }}>
+                          <Switch
+                            isSelected={menu.edit}
+                            onChange={() => handleToggle(menu.id, "edit")}
+                          >
+                            <Switch.Control><Switch.Thumb /></Switch.Control>
+                          </Switch>
+                        </Table.Cell>
+                        <Table.Cell style={{ textAlign: "center" }}>
+                          <Switch
+                            isSelected={menu.delete}
+                            onChange={() => handleToggle(menu.id, "delete")}
+                          >
+                            <Switch.Control><Switch.Thumb /></Switch.Control>
+                          </Switch>
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table.Content>
               </Table>
 
               <div className={`${actionButtons()} mt-3`}>
-                <Button
-                  type="button"
-                  color="primary"
-                  variant="flat"
-                  className={button()}
-                  onPress={() => navigate(-1)}
-                >
+                <Button type="button" variant="secondary" className={button()} onPress={() => navigate(-1)}>
                   Back
                 </Button>
-                <Button
-                  type="submit"
-                  color="primary"
-                  className={button()}
-                  startContent={<Save size={15} />}
-                >
+                <Button type="submit" variant="primary" className={button()}>
+                  <Save size={15} />
                   Save
                 </Button>
               </div>
             </div>
           </Form>
-        </CardBody>
+        </Card.Content>
       </Card>
     </div>
   );

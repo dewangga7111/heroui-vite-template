@@ -1,4 +1,3 @@
-import { Link } from "@heroui/link";
 import { Outlet } from "react-router-dom";
 
 import { Navbar } from "@/components/navbar";
@@ -11,15 +10,16 @@ export default function DefaultLayout() {
         <Outlet />
       </main>
       <footer className="w-full flex items-center justify-center py-3">
-        <Link
-          isExternal
+        <a
           className="flex items-center gap-1 text-current"
           href="https://heroui.com"
+          target="_blank"
+          rel="noopener noreferrer"
           title="heroui.com homepage"
         >
           <span className="text-default-600">Powered by</span>
           <p className="text-primary">HeroUI</p>
-        </Link>
+        </a>
       </footer>
     </div>
   );

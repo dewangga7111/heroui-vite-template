@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { ScrollShadow, Image } from "@heroui/react";
+import { ScrollShadow } from "@heroui/react";
 import { useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { isMobile } from "react-device-detect";
@@ -59,7 +59,7 @@ export default function SidebarContent({ open, onClose }: SidebarContentProps) {
         </div>
       ) : (
         <div className="flex items-center justify-start p-3">
-          <span className="font-bold"><Image src="/vite.svg" alt="Logo" height={50} /></span>
+          <span className="font-bold"><img src="/vite.svg" alt="Logo" height={50} /></span>
         </div>
       )}
 
