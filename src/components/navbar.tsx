@@ -29,7 +29,7 @@ function getActiveMenuLabel(pathname: string): string {
     }
   }
   const dashboard = menus.find((m) => m.path === "/");
-  return dashboard?.label ?? "Dashboard";
+  return dashboard?.label ?? "Executive Summary";
 }
 
 export const Navbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {

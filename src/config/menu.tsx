@@ -12,7 +12,7 @@ type MenuItem = {
 export const menus: MenuItem[] = [
   {
     key: 1,
-    label: "Dashboard",
+    label: "Executive Summary",
     icon: <Home size={18} />,
     path: "/",
   },

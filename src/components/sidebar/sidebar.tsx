@@ -21,7 +21,7 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
   return (
     <BrowserView>
       <Card
-        className={`h-screen sticky top-0 transition-all duration-300 rounded-none
+        className={`h-screen sticky top-0 transition-all duration-300 rounded-none bg-primary dark:bg-primary-800
           ${open ? "w-64" : "w-16"} flex flex-col p-0`}
       >
         <SidebarContent open={open} setOpen={setOpen} />

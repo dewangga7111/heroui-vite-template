@@ -13,10 +13,10 @@ import {
   MoreHorizontal,
   Plus,
 } from "lucide-react";
-import { 
-  BarChart, Bar, ResponsiveContainer, Cell, 
-  PieChart, Pie, LineChart, Line, AreaChart, Area, 
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend 
+import {
+  BarChart, Bar, ResponsiveContainer, Cell,
+  PieChart, Pie, LineChart, Line, AreaChart, Area,
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@heroui/react";
@@ -370,7 +370,7 @@ const ExpandedDetailCard = ({
                 </ResponsiveContainer>
               </div>
             </div>
-            
+
             <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
               <h4 className="font-medium text-slate-700 mb-4">5-Year Growth vs Target</h4>
               <ResponsiveContainer width="100%" height="100%">
@@ -380,7 +380,7 @@ const ExpandedDetailCard = ({
                   <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="actual" name="Actual Assets (T)" stroke="#003d79" strokeWidth={3} dot={{r: 4}} />
+                  <Line type="monotone" dataKey="actual" name="Actual Assets (T)" stroke="#003d79" strokeWidth={3} dot={{ r: 4 }} />
                   <Line type="monotone" dataKey="target" name="Target (T)" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={2} dot={false} />
                 </LineChart>
               </ResponsiveContainer>
@@ -464,7 +464,7 @@ const ExpandedDetailCard = ({
             </div>
           </div>
         );
-      
+
       case "wholesale-loans":
         return (
           <div className="flex flex-col gap-8">
@@ -493,7 +493,7 @@ const ExpandedDetailCard = ({
                 </ResponsiveContainer>
               </div>
             </div>
-            
+
             <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col">
               <h4 className="font-medium text-slate-700 mb-4">Top 5 Corporate Borrowers</h4>
               <div className="overflow-x-auto text-sm">
@@ -517,9 +517,9 @@ const ExpandedDetailCard = ({
                         <td className="py-4 text-slate-600">
                           <div className="flex items-center gap-2">
                             <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                              <div className="h-full bg-[#003d79]" style={{width: `${(item.utilized/item.limit)*100}%`}}></div>
+                              <div className="h-full bg-[#003d79]" style={{ width: `${(item.utilized / item.limit) * 100}%` }}></div>
                             </div>
-                            <span className="text-xs">{Math.round((item.utilized/item.limit)*100)}%</span>
+                            <span className="text-xs">{Math.round((item.utilized / item.limit) * 100)}%</span>
                           </div>
                         </td>
                       </tr>
@@ -554,7 +554,7 @@ const ExpandedDetailCard = ({
                     <XAxis dataKey="year" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                     <Tooltip />
-                    <Line type="monotone" dataKey="defaultRate" name="Default Rate (%)" stroke="#ef4444" strokeWidth={3} dot={{r: 4}} />
+                    <Line type="monotone" dataKey="defaultRate" name="Default Rate (%)" stroke="#ef4444" strokeWidth={3} dot={{ r: 4 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -578,12 +578,11 @@ const ExpandedDetailCard = ({
                         <td className="py-4 text-slate-700 font-medium">{item.id}</td>
                         <td className="py-4 text-slate-600">{item.amount}</td>
                         <td className="py-4">
-                          <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                            item.status === 'Restructured' ? 'bg-blue-100 text-blue-700' :
+                          <span className={`px-2 py-1 rounded text-xs font-semibold ${item.status === 'Restructured' ? 'bg-blue-100 text-blue-700' :
                             item.status === 'Liquidated' ? 'bg-green-100 text-green-700' :
-                            item.status === 'In Collection' ? 'bg-yellow-100 text-yellow-700' :
-                            'bg-slate-100 text-slate-700'
-                          }`}>
+                              item.status === 'In Collection' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-slate-100 text-slate-700'
+                            }`}>
                             {item.status}
                           </span>
                         </td>
@@ -635,7 +634,7 @@ const ExpandedDetailCard = ({
                   <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="actual" name="Avg Resolution (Days)" stroke="#ef4444" strokeWidth={3} dot={{r: 4}} />
+                  <Line type="monotone" dataKey="actual" name="Avg Resolution (Days)" stroke="#ef4444" strokeWidth={3} dot={{ r: 4 }} />
                   <Line type="monotone" dataKey="target" name="SLA Target" stroke="#10b981" strokeDasharray="5 5" strokeWidth={2} dot={false} />
                 </LineChart>
               </ResponsiveContainer>
@@ -717,7 +716,7 @@ const ExpandedDetailCard = ({
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto pr-4 -mr-4 space-y-6 no-scrollbar pb-10">
-        
+
         {/* Render All Charts for this Metric */}
         {renderMetricContent()}
 
@@ -770,10 +769,10 @@ export default function DashboardPage() {
   const activeMetric = METRICS.find((m) => m.id === selectedMetric);
 
   return (
-    <div className="font-sans text-slate-800 overflow-hidden relative pt-4 lg:pt-8 -mx-3 -mb-3">
+    <div className="font-sans text-slate-800 overflow-hidden relative pt-4 lg:pt-8 -mx-3 -mb-3 -mt-3">
       {/* Decorative Background Blurs */}
-      <div className="absolute top-[-10%] left-[20%] w-[600px] h-[600px] bg-blue-300/40 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] bg-indigo-200/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-blue-300/40 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-[30%] right-[-5%] w-[400px] h-[400px] bg-indigo-200/30 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="w-full mx-auto relative z-10 flex flex-col">
         {/* Header Section */}

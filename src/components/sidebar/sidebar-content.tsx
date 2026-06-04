@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { isMobile } from "react-device-detect";
 
 import SidebarMenuItem from "./sidebar-item";
+import logoWhite from "@/assets/images/logo-white.png";
 import { menus } from "@/config/menu";
 import { isMenuActive } from "./utils";
 import { usePermission } from "@/contexts/permission-context";
@@ -58,13 +59,13 @@ export default function SidebarContent({ open, onClose }: SidebarContentProps) {
           {open && <span className="font-bold">{appName}</span>}
         </div>
       ) : (
-        <div className="flex items-center justify-start p-3">
-          <span className="font-bold"><img src="/vite.svg" alt="Logo" height={50} /></span>
+        <div className="flex items-center justify-center px-3 pb-3 pt-5">
+          <img src={logoWhite} alt="Logo" className="w-[80%] h-auto" />
         </div>
       )}
 
       {/* Menu */}
-      <ScrollShadow aria-label="Sidebar menu" className="flex-grow mt-3">
+      <ScrollShadow aria-label="Sidebar menu" className="flex-grow mt-1">
         {menus
           .filter((item) => shouldShowMenu(item))
           .map((item) => (

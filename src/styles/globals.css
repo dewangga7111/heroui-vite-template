@@ -6,40 +6,53 @@
 @theme {
 	--breakpoint-3xl: 120rem;
 
-	/* Custom primary color scale (Mandiri Blue) */
-	--color-primary-50: #e6f0fa;
-	--color-primary-100: #ccdf2;
-	--color-primary-200: #99c2e6;
-	--color-primary-300: #66a3d9;
-	--color-primary-400: #3385cc;
-	--color-primary-500: #003d79;
-	--color-primary-600: #003161;
-	--color-primary-700: #002548;
-	--color-primary-800: #001830;
-	--color-primary-900: #000c18;
+	/* Mandiri Blue primary scale */
+	--color-primary-50:  #e6f0fa; /* rgb(230 240 250) */
+	--color-primary-100: #ccdff2; /* rgb(204 223 242) */
+	--color-primary-200: #99bfe6; /* rgb(153 191 230) */
+	--color-primary-300: #669fd9; /* rgb(102 159 217) */
+	--color-primary-400: #337fcc; /* rgb( 51 127 204) */
+	--color-primary-500: #003d79; /* rgb(  0  61 121) — Mandiri Blue */
+	--color-primary-600: #003161; /* rgb(  0  49  97) */
+	--color-primary-700: #002548; /* rgb(  0  37  72) */
+	--color-primary-800: #001830; /* rgb(  0  24  48) */
+	--color-primary-900: #000c18; /* rgb(  0  12  24) */
 	--color-primary: #003d79;
 }
 
-/* Override HeroUI primary color CSS variables */
-
 :root {
-	/* HeroUI v3 semantic tokens — controls component colors (buttons, inputs, etc.) */
-	--accent: oklch(37% 0.12 258); /* #003D79 approx */
-	--accent-foreground: oklch(100% 0 0); /* white */
-
-	/* Tailwind primary palette — for bg-primary, text-primary, from-primary, etc. */
-	--heroui-primary-50: 230 240 250;
+	/* HeroUI v3 — same values as Tailwind primary scale above, in rgb format */
+	--heroui-primary-50:  230 240 250;
 	--heroui-primary-100: 204 223 242;
-	--heroui-primary-200: 153 194 230;
-	--heroui-primary-300: 102 163 217;
-	--heroui-primary-400: 51 133 204;
-	--heroui-primary-500: 0 61 121;
-	--heroui-primary-600: 0 49 97;
+	--heroui-primary-200: 153 191 230;
+	--heroui-primary-300: 102 159 217;
+	--heroui-primary-400:  51 127 204;
+	--heroui-primary-500:   0  61 121;
+	--heroui-primary-600:   0  49  97;
+	--heroui-primary-700:   0  37  72;
+	--heroui-primary-800:   0  24  48;
+	--heroui-primary-900:   0  12  24;
 	--heroui-primary: 0 61 121;
-	--heroui-primary-700: 0 37 72;
-	--heroui-primary-800: 0 24 48;
-	--heroui-primary-900: 0 12 24;
 	--heroui-primary-foreground: 255 255 255;
+
+	/* HeroUI semantic accent token → Mandiri Blue */
+	--accent: oklch(29.1% 0.103 258);
+	--accent-foreground: oklch(100% 0 0);
+}
+
+/* Force HeroUI button primary to use Mandiri Blue — overrides @layer base */
+@layer base {
+	:root, :host {
+		--accent: oklch(29.1% 0.103 258);
+		--accent-foreground: oklch(100% 0 0);
+	}
+}
+
+.button--primary {
+	--button-bg: #003d79;
+	--button-bg-hover: #003161;
+	--button-bg-pressed: #002548;
+	--button-fg: #ffffff;
 }
 
 /* Text Animation Styles */
