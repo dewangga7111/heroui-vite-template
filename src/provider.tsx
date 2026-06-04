@@ -11,7 +11,7 @@ export function Provider({ children }: { children: React.ReactNode }) {
 
   return (
     <RouterProvider navigate={navigate} useHref={useHref}>
-      <NextThemesProvider attribute="class" defaultTheme="light">
+      <NextThemesProvider attribute="class" defaultTheme="light" enableSystem={false}>
         <ReduxProvider>
           <PermissionProvider>
             <ConfirmationProvider>

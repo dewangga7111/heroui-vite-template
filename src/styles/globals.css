@@ -3,6 +3,11 @@
 
 @config "../../tailwind.config.js";
 
+/* Tailwind v4 ignores `darkMode: "class"` in the JS config — register it here
+   so `dark:` variants respond to the `.dark` class (set by next-themes) instead
+   of the OS `prefers-color-scheme` media query. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
 	--breakpoint-3xl: 120rem;
 

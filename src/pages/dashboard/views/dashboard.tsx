@@ -431,26 +431,26 @@ const MetricCard = ({
   return (
     <motion.div
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white rounded-[2rem] p-6 shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-lg transition-shadow border border-transparent hover:border-blue-100 ${className}`}
+      className={`bg-white dark:bg-[#1a1c23] rounded-[2rem] p-6 shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-lg dark:hover:shadow-none transition-shadow border border-transparent dark:border-white/10 hover:border-blue-100 dark:hover:border-blue-500/40 ${className}`}
       initial={{ opacity: 0, y: 20 }}
       layoutId={layoutId}
       transition={{ duration: 0.5, delay }}
       onClick={onClick}
     >
       <div>
-        <div className="flex justify-between items-center mb-2 text-slate-500">
+        <div className="flex justify-between items-center mb-2 text-slate-500 dark:text-slate-400">
           <div className="flex items-center gap-2 text-sm font-medium">
             {Icon && <Icon size={16} />}
             {title}
           </div>
-          <button className="text-slate-300 hover:text-slate-500 transition-colors">
+          <button className="text-slate-300 dark:text-slate-600 hover:text-slate-500 dark:hover:text-slate-300 transition-colors">
             <ArrowUpRight size={18} />
           </button>
         </div>
-        <div className="text-xs text-slate-400 mb-4">{subtitle}</div>
+        <div className="text-xs text-slate-400 dark:text-slate-500 mb-4">{subtitle}</div>
 
         <div className="flex items-baseline gap-2">
-          <h2 className="text-4xl font-light text-slate-800">{value}</h2>
+          <h2 className="text-4xl font-light text-slate-800 dark:text-white">{value}</h2>
           <div
             className={`w-2 h-2 rounded-full ${isBad ? "bg-red-500" : "bg-green-500"}`}
           />
@@ -473,8 +473,8 @@ const ExpandedDetailCard = ({
 
   const renderMetricContent = () => {
     const gridClass = "grid grid-cols-1 lg:grid-cols-2 gap-8";
-    const cardClass = "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col w-full";
-    const fullWidthCardClass = "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col w-full lg:col-span-2";
+    const cardClass = "bg-white dark:bg-[#111318] p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col w-full";
+    const fullWidthCardClass = "bg-white dark:bg-[#111318] p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col w-full lg:col-span-2";
     const chartContainerClass = "h-72 w-full mt-4";
 
     switch (metric.id) {
@@ -482,7 +482,7 @@ const ExpandedDetailCard = ({
         return (
           <div className={gridClass}>
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Composition</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Composition</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -495,9 +495,9 @@ const ExpandedDetailCard = ({
                 </ResponsiveContainer>
               </div>
             </div>
-            
+
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Quarterly Yield Rate (%)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Quarterly Yield Rate (%)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.yield}>
@@ -511,7 +511,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={fullWidthCardClass}>
-              <h4 className="font-medium text-slate-700">5-Year Growth vs Target</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">5-Year Growth vs Target</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={detailData.growth}>
@@ -528,7 +528,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">YoY Growth (2023 vs 2024)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">YoY Growth (2023 vs 2024)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.yoyGrowth}>
@@ -545,7 +545,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Currency Composition by Asset</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Currency Composition by Asset</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.currencyComposition} layout="vertical">
@@ -567,7 +567,7 @@ const ExpandedDetailCard = ({
         return (
           <div className={gridClass}>
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Customers by AUM Tier</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Customers by AUM Tier</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.aum} layout="vertical">
@@ -580,9 +580,9 @@ const ExpandedDetailCard = ({
                 </ResponsiveContainer>
               </div>
             </div>
-            
+
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Age Demographics (%)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Age Demographics (%)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -597,7 +597,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={fullWidthCardClass}>
-              <h4 className="font-medium text-slate-700">Customer Onboarding vs Churn</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Customer Onboarding vs Churn</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={detailData.flow}>
@@ -614,7 +614,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Monthly Acquisition Target vs Actual</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Monthly Acquisition Target vs Actual</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={detailData.acquisition}>
@@ -631,7 +631,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Regional AUM Distribution</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Regional AUM Distribution</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.regionalAum}>
@@ -652,7 +652,7 @@ const ExpandedDetailCard = ({
         return (
           <div className={gridClass}>
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Livin' App Adoption (Millions)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Livin' App Adoption (Millions)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={detailData.adoption}>
@@ -667,9 +667,9 @@ const ExpandedDetailCard = ({
                 </ResponsiveContainer>
               </div>
             </div>
-            
+
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Daily Volume by Type (Millions)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Daily Volume by Type (Millions)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.transactions}>
@@ -683,7 +683,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Livin vs Kopra Usage (Millions)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Livin vs Kopra Usage (Millions)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={detailData.appUsage}>
@@ -700,7 +700,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Channel Volume: Fin vs Non-Fin</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Channel Volume: Fin vs Non-Fin</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.channelVolume}>
@@ -721,7 +721,7 @@ const ExpandedDetailCard = ({
         return (
           <div className={gridClass}>
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Exposure by Sector (Trillion Rp)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Exposure by Sector (Trillion Rp)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.exposure}>
@@ -733,9 +733,9 @@ const ExpandedDetailCard = ({
                 </ResponsiveContainer>
               </div>
             </div>
-            
+
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Loan Maturity Timeline (Trillion Rp)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Loan Maturity Timeline (Trillion Rp)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.maturity} layout="vertical">
@@ -750,7 +750,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">New Disbursals vs Repayments</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">New Disbursals vs Repayments</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.loanFlow}>
@@ -766,7 +766,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Loan Type (KMK vs KI)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Loan Type (KMK vs KI)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.loanType}>
@@ -782,10 +782,10 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={fullWidthCardClass}>
-              <h4 className="font-medium text-slate-700 mb-4">Top 5 Corporate Borrowers</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200 mb-4">Top 5 Corporate Borrowers</h4>
               <div className="overflow-x-auto text-sm w-full">
                 <table className="w-full text-left min-w-[400px]">
-                  <thead className="text-slate-400 border-b border-slate-100">
+                  <thead className="text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800">
                     <tr>
                       <th className="pb-3 font-medium">Borrower Group</th>
                       <th className="pb-3 font-medium">Internal Rating</th>
@@ -794,17 +794,18 @@ const ExpandedDetailCard = ({
                   </thead>
                   <tbody>
                     {detailData.topBorrowers.map((item: any, i: number) => (
-                      <tr key={i} className="border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors">
-                        <td className="py-4 text-slate-700 font-medium">{item.name}</td>
-                        <td className="py-4"><span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-semibold">{item.rating}</span></td>
-                        <td className="py-4 text-slate-600">
+                      <tr key={i} className="border-b border-slate-50 dark:border-slate-800/50 last:border-0 hover:bg-slate-50 dark:hover:bg-[#1a1c23] transition-colors">
+                        <td className="py-4 text-slate-700 dark:text-slate-200 font-medium">{item.name}</td>
+                        <td className="py-4"><span className="px-2 py-1 bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 rounded text-xs font-semibold">{item.rating}</span></td>
+                        <td className="py-4 text-slate-600 dark:text-slate-400">
                           <div className="flex items-center gap-2">
-                            <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden min-w-[60px]">
-                              <div className="h-full bg-[#003d79]" style={{ width: `${(item.utilized / item.limit) * 100}%` }}></div>
+                            <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                              <div className="bg-blue-600 h-full" style={{ width: `${item.utilization}%` }} />
                             </div>
-                            <span className="text-xs w-8">{Math.round((item.utilized / item.limit) * 100)}%</span>
+                            <span>{item.utilization}%</span>
                           </div>
                         </td>
+                        <td className="py-4 text-slate-700 dark:text-slate-200">{item.exposure}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -818,7 +819,7 @@ const ExpandedDetailCard = ({
         return (
           <div className={gridClass}>
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">NPL Ratio by Segment (%)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">NPL Ratio by Segment (%)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.segment}>
@@ -830,9 +831,9 @@ const ExpandedDetailCard = ({
                 </ResponsiveContainer>
               </div>
             </div>
-            
+
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Default Rate by Vintage Year (%)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Default Rate by Vintage Year (%)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={detailData.vintage}>
@@ -847,7 +848,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">NPL Balance vs Ratio</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">NPL Balance vs Ratio</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.nplTrend}>
@@ -865,7 +866,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">NPL Downgrades vs Recoveries</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">NPL Downgrades vs Recoveries</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.nplMovement}>
@@ -881,30 +882,32 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={fullWidthCardClass}>
-              <h4 className="font-medium text-slate-700 mb-4">Active Recovery Efforts</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200 mb-4">Active Recovery Efforts</h4>
               <div className="overflow-x-auto text-sm w-full">
                 <table className="w-full text-left min-w-[350px]">
-                  <thead className="text-slate-400 border-b border-slate-100">
+                  <thead className="text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800">
                     <tr>
                       <th className="pb-3 font-medium">Loan ID</th>
                       <th className="pb-3 font-medium">Amount</th>
                       <th className="pb-3 font-medium">Status</th>
+                      <th className="pb-3 font-medium">Progress</th>
                     </tr>
                   </thead>
                   <tbody>
                     {detailData.recovery.map((item: any, i: number) => (
-                      <tr key={i} className="border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors">
-                        <td className="py-4 text-slate-700 font-medium">{item.id}</td>
-                        <td className="py-4 text-slate-600">{item.amount}</td>
+                      <tr key={i} className="border-b border-slate-50 dark:border-slate-800/50 last:border-0 hover:bg-slate-50 dark:hover:bg-[#1a1c23] transition-colors">
+                        <td className="py-4 text-slate-700 dark:text-slate-200 font-medium">{item.id}</td>
+                        <td className="py-4 text-slate-600 dark:text-slate-400">{item.amount}</td>
                         <td className="py-4">
-                          <span className={`px-2 py-1 rounded text-xs font-semibold ${item.status === 'Restructured' ? 'bg-blue-100 text-blue-700' :
-                            item.status === 'Liquidated' ? 'bg-green-100 text-green-700' :
-                              item.status === 'In Collection' ? 'bg-yellow-100 text-yellow-700' :
-                                'bg-slate-100 text-slate-700'
+                          <span className={`px-2 py-1 rounded text-xs font-semibold ${item.status === 'Restructured' ? 'bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400' :
+                            item.status === 'Liquidated' ? 'bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400' :
+                              item.status === 'In Collection' ? 'bg-yellow-100 dark:bg-yellow-500/10 text-yellow-700 dark:text-yellow-400' :
+                                'bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200'
                             }`}>
                             {item.status}
                           </span>
                         </td>
+                        <td className="py-4 text-slate-700 dark:text-slate-200">{item.progress}%</td>
                       </tr>
                     ))}
                   </tbody>
@@ -918,7 +921,7 @@ const ExpandedDetailCard = ({
         return (
           <div className={gridClass}>
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Incidents by Type</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Incidents by Type</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -931,9 +934,9 @@ const ExpandedDetailCard = ({
                 </ResponsiveContainer>
               </div>
             </div>
-            
+
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Incidents by Region</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Incidents by Region</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.hotspots}>
@@ -947,7 +950,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={fullWidthCardClass}>
-              <h4 className="font-medium text-slate-700">Resolution Time vs SLA Target (Days)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Resolution Time vs SLA Target (Days)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={detailData.sla}>
@@ -964,7 +967,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Reported vs Prevented</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Reported vs Prevented</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.fraudResolution}>
@@ -980,7 +983,7 @@ const ExpandedDetailCard = ({
             </div>
 
             <div className={cardClass}>
-              <h4 className="font-medium text-slate-700">Potential vs Actual Loss (Billion Rp)</h4>
+              <h4 className="font-medium text-slate-700 dark:text-slate-200">Potential vs Actual Loss (Billion Rp)</h4>
               <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.fraudImpact}>
@@ -1008,28 +1011,28 @@ const ExpandedDetailCard = ({
   return (
     <motion.div
       layoutId={metric.layoutId}
-      className="w-full bg-white rounded-[2.5rem] p-6 lg:p-10 flex flex-col shadow-sm flex-1 min-h-[800px] z-50 relative"
+      className="w-full bg-white dark:bg-[#111318] rounded-[2.5rem] p-6 lg:p-10 flex flex-col shadow-sm flex-1 min-h-[800px] z-50 relative"
     >
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div className="flex items-center gap-6">
           <button
-            className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center hover:bg-slate-100 transition-colors text-slate-600 shrink-0"
+            className="w-12 h-12 rounded-full bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300 shrink-0"
             onClick={onBack}
           >
             <ArrowLeft size={24} />
           </button>
           <div>
-            <div className="flex items-center gap-3 text-slate-500 mb-1">
+            <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400 mb-1">
               <metric.icon size={20} />
               <span className="font-medium text-lg">{metric.title}</span>
             </div>
             <div className="flex items-baseline gap-3">
-              <h2 className="text-4xl lg:text-5xl font-light text-slate-800">
+              <h2 className="text-4xl lg:text-5xl font-light text-slate-800 dark:text-white">
                 {metric.value}
               </h2>
               <span
-                className={`text-sm font-medium px-2 py-1 rounded-md ${metric.isBad ? "text-red-600 bg-red-50" : "text-green-600 bg-green-50"}`}
+                className={`text-sm font-medium px-2 py-1 rounded-md ${metric.isBad ? "text-red-600 bg-red-50 dark:bg-red-500/10 dark:text-red-400" : "text-green-600 bg-green-50 dark:bg-green-500/10 dark:text-green-400"}`}
               >
                 {metric.subtitle}
               </span>
@@ -1038,7 +1041,7 @@ const ExpandedDetailCard = ({
         </div>
 
         <div className="flex gap-2">
-          <button className="px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-slate-200 transition-colors">
+          <button className="px-4 py-2 bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 rounded-full text-sm font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
             Export Report
           </button>
         </div>
@@ -1076,11 +1079,11 @@ const ExpandedDetailCard = ({
         {renderMetricContent()}
 
         {/* Global Recent Events Section */}
-        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 mt-8">
-          <h4 className="font-medium mb-1 text-slate-700">
+        <div className="bg-slate-50 dark:bg-[#1a1c23] p-6 rounded-2xl border border-slate-100 dark:border-slate-800 mt-8">
+          <h4 className="font-medium mb-1 text-slate-700 dark:text-slate-200">
             Recent Transactions & Events
           </h4>
-          <p className="text-xs text-slate-400 mb-6">
+          <p className="text-xs text-slate-400 dark:text-slate-500 mb-6">
             Latest registered events affecting this metric.
           </p>
 
@@ -1088,23 +1091,23 @@ const ExpandedDetailCard = ({
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-100 shadow-sm transition-all hover:shadow-md"
+                className="flex items-center justify-between p-4 bg-white dark:bg-[#111318] rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:shadow-md dark:hover:shadow-none"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#003d79] shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-[#003d79] dark:text-blue-400 shrink-0">
                     <Activity size={16} />
                   </div>
                   <div>
-                    <div className="font-medium text-sm text-slate-700">
+                    <div className="font-medium text-sm text-slate-700 dark:text-slate-200">
                       Event Record #{i}8492
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-slate-400 dark:text-slate-500">
                       Processed today at 10:{i}4 AM
                     </div>
                   </div>
                 </div>
                 <div
-                  className={`font-medium text-sm ${metric.isBad ? "text-red-600" : "text-slate-700"}`}
+                  className={`font-medium text-sm ${metric.isBad ? "text-red-600 dark:text-red-400" : "text-slate-700 dark:text-slate-200"}`}
                 >
                   {metric.isBad ? "+" : "+ Rp "}{" "}
                   {Math.floor(Math.random() * 500)}{" "}
@@ -1124,12 +1127,12 @@ export default function DashboardPage() {
   const activeMetric = METRICS.find((m) => m.id === selectedMetric);
 
   return (
-    <div className="font-sans text-slate-800 overflow-hidden relative pt-4 lg:pt-8 -mx-3 -mb-3 -mt-3">
+    <div className="font-sans text-slate-800 dark:text-slate-200 overflow-hidden relative pt-4 lg:pt-8 -mx-3 -mb-3 -mt-3 min-h-full flex flex-col">
       {/* Decorative Background Blurs */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-blue-300/40 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-[30%] right-[-5%] w-[400px] h-[400px] bg-indigo-200/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-blue-300/40 dark:bg-blue-900/40 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-[30%] right-[-5%] w-[400px] h-[400px] bg-indigo-200/30 dark:bg-indigo-900/30 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="w-full mx-auto relative z-10 flex flex-col">
+      <div className="w-full mx-auto relative z-10 flex flex-col flex-1">
         {/* Header Section */}
         <AnimatePresence>
           {!selectedMetric && (
@@ -1140,10 +1143,10 @@ export default function DashboardPage() {
               className="relative px-4 lg:px-8 overflow-hidden"
               transition={{ duration: 0.3 }}
             >
-              <p className="text-sm text-slate-500 mb-1 font-medium">
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium">
                 Mandiri Analyst Portal
               </p>
-              <h1 className="text-4xl lg:text-5xl font-semibold tracking-tight text-slate-800">
+              <h1 className="text-4xl lg:text-5xl font-semibold tracking-tight text-slate-800 dark:text-white">
                 Executive Summary
               </h1>
             </motion.div>
@@ -1151,8 +1154,8 @@ export default function DashboardPage() {
         </AnimatePresence>
 
         {/* Main Dashboard Area */}
-        <motion.div layout className="relative mt-4">
-          <Card className="w-full bg-white/40 backdrop-blur-md shadow-xl border-none rounded-t-[2.5rem] rounded-b-none overflow-hidden">
+        <motion.div layout className="relative mt-4 flex-1 flex flex-col">
+          <Card className="w-full flex-1 bg-white dark:bg-[#1a1c23] shadow-xl border-none rounded-t-[2.5rem] rounded-b-none overflow-hidden">
             <Card.Content className="p-4 lg:p-6 flex flex-col relative">
               <AnimatePresence mode="wait">
                 {selectedMetric ? (
