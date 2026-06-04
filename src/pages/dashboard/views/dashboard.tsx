@@ -21,7 +21,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@heroui/react";
 
-const COLORS = ['#0B3B60', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+const COLORS = ['#003d79', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
 // --- Mock Data ---
 const generateData = (
@@ -240,7 +240,7 @@ const DETAIL_MOCK_DATA = {
 
 const Sparkline = ({
   data,
-  color = "#0B3B60",
+  color = "#003d79",
   dangerColor = "#ef4444",
 }: {
   data: any[];
@@ -380,7 +380,7 @@ const ExpandedDetailCard = ({
                   <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="actual" name="Actual Assets (T)" stroke="#0B3B60" strokeWidth={3} dot={{r: 4}} />
+                  <Line type="monotone" dataKey="actual" name="Actual Assets (T)" stroke="#003d79" strokeWidth={3} dot={{r: 4}} />
                   <Line type="monotone" dataKey="target" name="Target (T)" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={2} dot={false} />
                 </LineChart>
               </ResponsiveContainer>
@@ -446,7 +446,7 @@ const ExpandedDetailCard = ({
                   <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                   <Tooltip />
                   <Legend />
-                  <Area type="monotone" dataKey="mau" name="Monthly Active Users" stroke="#0B3B60" fill="#0B3B60" fillOpacity={0.3} />
+                  <Area type="monotone" dataKey="mau" name="Monthly Active Users" stroke="#003d79" fill="#003d79" fillOpacity={0.3} />
                   <Area type="monotone" dataKey="dormant" name="Dormant" stroke="#94a3b8" fill="#94a3b8" fillOpacity={0.1} />
                 </AreaChart>
               </ResponsiveContainer>
@@ -476,7 +476,7 @@ const ExpandedDetailCard = ({
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                     <XAxis dataKey="sector" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                     <Tooltip />
-                    <Bar dataKey="amount" fill="#0B3B60" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="amount" fill="#003d79" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -517,7 +517,7 @@ const ExpandedDetailCard = ({
                         <td className="py-4 text-slate-600">
                           <div className="flex items-center gap-2">
                             <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                              <div className="h-full bg-[#0B3B60]" style={{width: `${(item.utilized/item.limit)*100}%`}}></div>
+                              <div className="h-full bg-[#003d79]" style={{width: `${(item.utilized/item.limit)*100}%`}}></div>
                             </div>
                             <span className="text-xs">{Math.round((item.utilized/item.limit)*100)}%</span>
                           </div>
@@ -699,7 +699,7 @@ const ExpandedDetailCard = ({
                 const isBad =
                   entry.type === "bad" ||
                   (entry.type === "mixed" && entry.isHighlighted);
-                const barColor = isBad ? "#ef4444" : "#0B3B60";
+                const barColor = isBad ? "#ef4444" : "#003d79";
                 const opacity = entry.isHighlighted ? 1 : 0.4;
 
                 return (
@@ -737,7 +737,7 @@ const ExpandedDetailCard = ({
                 className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-100 shadow-sm transition-all hover:shadow-md"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#0B3B60] shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#003d79] shrink-0">
                     <Activity size={16} />
                   </div>
                   <div>
