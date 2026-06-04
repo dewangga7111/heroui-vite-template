@@ -6,39 +6,39 @@
 @theme {
 	--breakpoint-3xl: 120rem;
 
-	/* Custom primary color scale (violet/purple) */
-	--color-primary-50: #f5f3ff;
-	--color-primary-100: #ede9fe;
-	--color-primary-200: #ddd6fe;
-	--color-primary-300: #c4b5fd;
-	--color-primary-400: #a78bfa;
-	--color-primary-500: #8b5cf6;
-	--color-primary-600: #7c3aed;
-	--color-primary-700: #6d28d9;
-	--color-primary-800: #5b21b6;
-	--color-primary-900: #4c1d95;
-	--color-primary: #7c3aed;
+	/* Custom primary color scale (Mandiri Blue) */
+	--color-primary-50: #e5f3ff;
+	--color-primary-100: #cce6ff;
+	--color-primary-200: #99cdff;
+	--color-primary-300: #66b4ff;
+	--color-primary-400: #339bff;
+	--color-primary-500: #0b3b60;
+	--color-primary-600: #082f4d;
+	--color-primary-700: #06233a;
+	--color-primary-800: #041826;
+	--color-primary-900: #020c13;
+	--color-primary: #0b3b60;
 }
 
 /* Override HeroUI primary color CSS variables */
 
 :root {
 	/* HeroUI v3 semantic tokens — controls component colors (buttons, inputs, etc.) */
-	--accent: oklch(57.69% 0.246 293.94); /* violet-600 = #7c3aed */
+	--accent: oklch(33.5% 0.08 255); /* #0B3B60 approx */
 	--accent-foreground: oklch(100% 0 0); /* white */
 
 	/* Tailwind primary palette — for bg-primary, text-primary, from-primary, etc. */
-	--heroui-primary-50: 245 243 255;
-	--heroui-primary-100: 237 233 254;
-	--heroui-primary-200: 221 214 254;
-	--heroui-primary-300: 196 181 253;
-	--heroui-primary-400: 167 139 250;
-	--heroui-primary-500: 139 92 246;
-	--heroui-primary-600: 124 58 237;
-	--heroui-primary: 124 58 237;
-	--heroui-primary-700: 109 40 217;
-	--heroui-primary-800: 91 33 182;
-	--heroui-primary-900: 76 29 149;
+	--heroui-primary-50: 229 243 255;
+	--heroui-primary-100: 204 230 255;
+	--heroui-primary-200: 153 205 255;
+	--heroui-primary-300: 102 180 255;
+	--heroui-primary-400: 51 155 255;
+	--heroui-primary-500: 11 59 96;
+	--heroui-primary-600: 8 47 77;
+	--heroui-primary: 11 59 96;
+	--heroui-primary-700: 6 35 58;
+	--heroui-primary-800: 4 24 38;
+	--heroui-primary-900: 2 12 19;
 	--heroui-primary-foreground: 255 255 255;
 }
 
