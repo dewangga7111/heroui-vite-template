@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import {
   BarChart, Bar, ResponsiveContainer, Cell,
-  PieChart, Pie, LineChart, Line, AreaChart, Area,
+  PieChart, Pie, Sector, LineChart, Line, AreaChart, Area,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
@@ -57,6 +57,7 @@ const METRICS = [
     data: generateData(30, 20, 100, "good"),
     layoutId: "card-assets",
     isBad: false,
+    color: "#003d79",
   },
   {
     id: "priority-customers",
@@ -67,6 +68,7 @@ const METRICS = [
     data: generateData(30, 10, 80, "good"),
     layoutId: "card-priority",
     isBad: false,
+    color: "#10b981",
   },
   {
     id: "regular-customers",
@@ -77,6 +79,7 @@ const METRICS = [
     data: generateData(30, 40, 90, "good"),
     layoutId: "card-regular",
     isBad: false,
+    color: "#f59e0b",
   },
   {
     id: "wholesale-loans",
@@ -87,6 +90,7 @@ const METRICS = [
     data: generateData(30, 30, 100, "good"),
     layoutId: "card-wholesale",
     isBad: false,
+    color: "#8b5cf6",
   },
   {
     id: "npl",
@@ -97,6 +101,7 @@ const METRICS = [
     data: generateData(30, 10, 60, "bad"),
     layoutId: "card-npl",
     isBad: true,
+    color: "#ef4444",
   },
   {
     id: "fraud-alerts",
@@ -107,6 +112,7 @@ const METRICS = [
     data: generateData(30, 5, 40, "bad"),
     layoutId: "card-fraud",
     isBad: true,
+    color: "#f97316",
   },
 ];
 
@@ -131,6 +137,17 @@ const DETAIL_MOCK_DATA = {
       { year: "2022", actual: 1800, target: 1850 },
       { year: "2023", actual: 2000, target: 1950 },
       { year: "2024", actual: 2134, target: 2100 },
+    ],
+    yoyGrowth: [
+      { quarter: "Q1", y2023: 1950, y2024: 2010 },
+      { quarter: "Q2", y2023: 1980, y2024: 2050 },
+      { quarter: "Q3", y2023: 2000, y2024: 2080 },
+      { quarter: "Q4", y2023: 2000, y2024: 2134 },
+    ],
+    currencyComposition: [
+      { category: "Loans", idr: 1000, valas: 200 },
+      { category: "Bonds", idr: 500, valas: 100 },
+      { category: "Placements", idr: 250, valas: 84 },
     ]
   },
   "priority-customers": {
@@ -151,6 +168,20 @@ const DETAIL_MOCK_DATA = {
       { month: "Feb", onboarded: 1500, churned: 250 },
       { month: "Mar", onboarded: 1100, churned: 400 },
       { month: "Apr", onboarded: 1800, churned: 350 },
+    ],
+    acquisition: [
+      { month: "Jan", target: 1000, actual: 1200 },
+      { month: "Feb", target: 1100, actual: 1500 },
+      { month: "Mar", target: 1200, actual: 1100 },
+      { month: "Apr", target: 1300, actual: 1800 },
+      { month: "May", target: 1400, actual: 1600 },
+    ],
+    regionalAum: [
+      { region: "Jakarta", tier1: 45000, tier2: 25000 },
+      { region: "Jabar", tier1: 25000, tier2: 15000 },
+      { region: "Jatim", tier1: 20000, tier2: 12000 },
+      { region: "Sumatra", tier1: 15000, tier2: 8000 },
+      { region: "Bali", tier1: 10000, tier2: 5000 },
     ]
   },
   "regular-customers": {
@@ -166,6 +197,18 @@ const DETAIL_MOCK_DATA = {
       { type: "QRIS", vol: 450 },
       { type: "Top-up", vol: 350 },
       { type: "Payment", vol: 200 },
+    ],
+    appUsage: [
+      { month: "Jan", livin: 18, kopra: 1.2 },
+      { month: "Feb", livin: 20, kopra: 1.3 },
+      { month: "Mar", livin: 22, kopra: 1.5 },
+      { month: "Apr", livin: 25, kopra: 1.8 },
+      { month: "May", livin: 28, kopra: 2.1 },
+    ],
+    channelVolume: [
+      { channel: "Livin", financial: 1200, nonFinancial: 800 },
+      { channel: "ATM", financial: 400, nonFinancial: 150 },
+      { channel: "Branch", financial: 100, nonFinancial: 50 },
     ]
   },
   "wholesale-loans": {
@@ -187,6 +230,18 @@ const DETAIL_MOCK_DATA = {
       { term: "< 1 Year", amount: 150 },
       { term: "1-3 Years", amount: 450 },
       { term: "> 3 Years", amount: 242 },
+    ],
+    loanFlow: [
+      { sector: "Infrastruktur", new: 85, repaid: 40 },
+      { sector: "Manufaktur", new: 60, repaid: 55 },
+      { sector: "Energi", new: 45, repaid: 30 },
+      { sector: "Perkebunan", new: 25, repaid: 35 },
+    ],
+    loanType: [
+      { sector: "Infrastruktur", kmk: 100, ki: 200 },
+      { sector: "Manufaktur", kmk: 150, ki: 100 },
+      { sector: "Energi", kmk: 80, ki: 100 },
+      { sector: "Perkebunan", kmk: 72, ki: 40 },
     ]
   },
   "npl": {
@@ -210,6 +265,19 @@ const DETAIL_MOCK_DATA = {
       { id: "L-3321", status: "Liquidated", amount: "Rp 12B", date: "2024-05-10" },
       { id: "L-8842", status: "In Collection", amount: "Rp 5B", date: "2024-05-08" },
       { id: "L-1102", status: "Written-off", amount: "Rp 20B", date: "2024-05-01" },
+    ],
+    nplTrend: [
+      { quarter: "Q1", balance: 24.5, ratio: 1.35 },
+      { quarter: "Q2", balance: 23.8, ratio: 1.30 },
+      { quarter: "Q3", balance: 23.1, ratio: 1.28 },
+      { quarter: "Q4", balance: 22.4, ratio: 1.24 },
+    ],
+    nplMovement: [
+      { segment: "Commercial", downgrade: 4.2, recovery: 5.1 },
+      { segment: "Consumer", downgrade: 3.5, recovery: 3.8 },
+      { segment: "SME", downgrade: 2.1, recovery: 2.4 },
+      { segment: "Micro", downgrade: 1.5, recovery: 1.8 },
+      { segment: "Corporate", downgrade: 0.8, recovery: 1.2 },
     ]
   },
   "fraud-alerts": {
@@ -232,11 +300,70 @@ const DETAIL_MOCK_DATA = {
       { week: "W2", actual: 4.2, target: 5 },
       { week: "W3", actual: 5.5, target: 5 },
       { week: "W4", actual: 3.8, target: 5 },
+    ],
+    fraudResolution: [
+      { month: "Jan", reported: 120, prevented: 110 },
+      { month: "Feb", reported: 150, prevented: 142 },
+      { month: "Mar", reported: 90, prevented: 85 },
+      { month: "Apr", reported: 180, prevented: 175 },
+    ],
+    fraudImpact: [
+      { type: "Phishing", potential: 50, actual: 5 },
+      { type: "Card Skim", potential: 30, actual: 12 },
+      { type: "Takeover", potential: 80, actual: 15 },
+      { type: "Internal", potential: 20, actual: 2 },
     ]
   }
 };
 
 // --- Components ---
+
+const ZoomedBar = (props: any) => {
+  const { x, y, width, height, fill, radius } = props;
+  const r = Array.isArray(radius) ? radius[0] : (radius ?? 4);
+  return (
+    <motion.rect
+      x={x - 1}
+      width={width + 2}
+      rx={r}
+      ry={r}
+      fill={fill}
+      initial={{ y: y, height: height, filter: `drop-shadow(0px 0px 0px ${fill}00)` }}
+      animate={{ y: y - 6, height: height + 6, width: width + 4, filter: `drop-shadow(0px 4px 8px ${fill}bb) drop-shadow(0px 0px 4px ${fill}77)` }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+    />
+  );
+};
+
+const GlowPieSlice = (props: any) => {
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
+  return (
+    <Sector
+      cx={cx}
+      cy={cy}
+      innerRadius={innerRadius - 2}
+      outerRadius={outerRadius + 10}
+      startAngle={startAngle}
+      endAngle={endAngle}
+      fill={fill}
+      style={{ filter: `drop-shadow(0px 4px 14px ${fill}bb) drop-shadow(0px 0px 6px ${fill}77)`, transition: "all 0.2s ease" }}
+    />
+  );
+};
+
+const GlowDot = (props: any) => {
+  const { cx, cy, stroke } = props;
+  return (
+    <motion.circle
+      cx={cx}
+      cy={cy}
+      fill={stroke}
+      initial={{ r: 4, filter: `drop-shadow(0px 0px 0px ${stroke}00)` }}
+      animate={{ r: 7, filter: `drop-shadow(0px 0px 10px ${stroke}cc) drop-shadow(0px 0px 4px ${stroke}88)` }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+    />
+  );
+};
 
 const Sparkline = ({
   data,
@@ -257,7 +384,9 @@ const Sparkline = ({
                 entry.type === "bad" ||
                 (entry.type === "mixed" && entry.isHighlighted);
               const barColor = isBad ? dangerColor : color;
-              const opacity = entry.isHighlighted ? 1 : 0.2;
+              const opacity = entry.type === "good"
+                ? 0.3 + (entry.value / 100) * 0.7
+                : entry.isHighlighted ? 1 : 0.25;
 
               return (
                 <Cell key={`cell-${index}`} fill={barColor} opacity={opacity} />
@@ -297,6 +426,7 @@ const MetricCard = ({
   layoutId,
   onClick,
   isBad,
+  color,
 }: any) => {
   return (
     <motion.div
@@ -327,7 +457,7 @@ const MetricCard = ({
         </div>
       </div>
 
-      {data && <Sparkline data={data} />}
+      {data && <Sparkline color={color} dangerColor={color} data={data} />}
     </motion.div>
   );
 };
@@ -342,168 +472,323 @@ const ExpandedDetailCard = ({
   const detailData = DETAIL_MOCK_DATA[metric.id as keyof typeof DETAIL_MOCK_DATA];
 
   const renderMetricContent = () => {
+    const gridClass = "grid grid-cols-1 lg:grid-cols-2 gap-8";
+    const cardClass = "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col w-full";
+    const fullWidthCardClass = "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col w-full lg:col-span-2";
+    const chartContainerClass = "h-72 w-full mt-4";
+
     switch (metric.id) {
       case "total-assets":
         return (
-          <div className="flex flex-col gap-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-                <h4 className="font-medium text-slate-700 mb-4">Composition</h4>
+          <div className={gridClass}>
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Composition</h4>
+              <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
-                    <Pie data={detailData.composition} cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={2} dataKey="value" label>
+                    <Pie data={detailData.composition} cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={2} dataKey="value" nameKey="name" activeShape={(props: any) => <GlowPieSlice {...props} />}>
                       {detailData.composition.map((entry: any, index: number) => <Cell key={index} fill={COLORS[index % COLORS.length]} />)}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip cursor={false} />
+                    <Legend />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
-              <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-                <h4 className="font-medium text-slate-700 mb-4">Quarterly Yield Rate (%)</h4>
+            </div>
+            
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Quarterly Yield Rate (%)</h4>
+              <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.yield}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                     <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                    <Tooltip />
-                    <Bar dataKey="rate" fill="#10b981" radius={[4, 4, 0, 0]} />
+                    <Tooltip cursor={false} />
+                    <Bar dataKey="rate" fill="#10b981" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-              <h4 className="font-medium text-slate-700 mb-4">5-Year Growth vs Target</h4>
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={detailData.growth}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="year" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="actual" name="Actual Assets (T)" stroke="#003d79" strokeWidth={3} dot={{ r: 4 }} />
-                  <Line type="monotone" dataKey="target" name="Target (T)" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={2} dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
+            <div className={fullWidthCardClass}>
+              <h4 className="font-medium text-slate-700">5-Year Growth vs Target</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={detailData.growth}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="year" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Line type="monotone" dataKey="actual" name="Actual Assets (T)" stroke="#003d79" strokeWidth={3} dot={{ r: 4 }} />
+                    <Line type="monotone" dataKey="target" name="Target (T)" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">YoY Growth (2023 vs 2024)</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.yoyGrowth}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="quarter" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} domain={['dataMin - 100', 'dataMax + 100']} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Bar dataKey="y2023" name="2023" fill="#94a3b8" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                    <Bar dataKey="y2024" name="2024" fill="#003d79" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Currency Composition by Asset</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.currencyComposition} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
+                    <XAxis type="number" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis dataKey="category" type="category" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} width={80} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Bar dataKey="idr" name="IDR (Trillion)" stackId="a" fill="#10b981" />
+                    <Bar dataKey="valas" name="Valas (Trillion)" stackId="a" fill="#f59e0b" radius={[0, 4, 4, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
         );
 
       case "priority-customers":
         return (
-          <div className="flex flex-col gap-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-                <h4 className="font-medium text-slate-700 mb-4">Customers by AUM Tier</h4>
+          <div className={gridClass}>
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Customers by AUM Tier</h4>
+              <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.aum} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
                     <XAxis type="number" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis dataKey="tier" type="category" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} width={80} />
-                    <Tooltip />
-                    <Bar dataKey="customers" fill="#f59e0b" radius={[0, 4, 4, 0]} />
+                    <Tooltip cursor={false} />
+                    <Bar dataKey="customers" fill="#f59e0b" radius={[0, 4, 4, 0]} activeBar={<ZoomedBar />} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-              <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-                <h4 className="font-medium text-slate-700 mb-4">Age Demographics (%)</h4>
+            </div>
+            
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Age Demographics (%)</h4>
+              <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
-                    <Pie data={detailData.demographics} cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={2} dataKey="value" label>
+                    <Pie data={detailData.demographics} cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={2} dataKey="value" nameKey="name" activeShape={(props: any) => <GlowPieSlice {...props} />}>
                       {detailData.demographics.map((entry: any, index: number) => <Cell key={index} fill={COLORS[index % COLORS.length]} />)}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip cursor={false} />
+                    <Legend />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-              <h4 className="font-medium text-slate-700 mb-4">Customer Onboarding vs Churn</h4>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={detailData.flow}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                  <Tooltip />
-                  <Legend />
-                  <Area type="monotone" dataKey="onboarded" stackId="1" stroke="#10b981" fill="#10b981" fillOpacity={0.6} />
-                  <Area type="monotone" dataKey="churned" stackId="2" stroke="#ef4444" fill="#ef4444" fillOpacity={0.6} />
-                </AreaChart>
-              </ResponsiveContainer>
+            <div className={fullWidthCardClass}>
+              <h4 className="font-medium text-slate-700">Customer Onboarding vs Churn</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={detailData.flow}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Area type="monotone" dataKey="onboarded" stackId="1" stroke="#10b981" fill="#10b981" fillOpacity={0.6} activeDot={<GlowDot />} />
+                    <Area type="monotone" dataKey="churned" stackId="2" stroke="#ef4444" fill="#ef4444" fillOpacity={0.6} activeDot={<GlowDot />} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Monthly Acquisition Target vs Actual</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={detailData.acquisition}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Line type="monotone" dataKey="actual" name="Actual" stroke="#f59e0b" strokeWidth={3} dot={{ r: 4 }} />
+                    <Line type="monotone" dataKey="target" name="Target" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Regional AUM Distribution</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.regionalAum}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="region" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Bar dataKey="tier1" name="500M - 1B" fill="#f59e0b" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                    <Bar dataKey="tier2" name="> 1B" fill="#003d79" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
         );
 
       case "regular-customers":
         return (
-          <div className="flex flex-col gap-8">
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-              <h4 className="font-medium text-slate-700 mb-4">Livin' App Adoption (Millions)</h4>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={detailData.adoption}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                  <Tooltip />
-                  <Legend />
-                  <Area type="monotone" dataKey="mau" name="Monthly Active Users" stroke="#003d79" fill="#003d79" fillOpacity={0.3} />
-                  <Area type="monotone" dataKey="dormant" name="Dormant" stroke="#94a3b8" fill="#94a3b8" fillOpacity={0.1} />
-                </AreaChart>
-              </ResponsiveContainer>
+          <div className={gridClass}>
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Livin' App Adoption (Millions)</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={detailData.adoption}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Area type="monotone" dataKey="mau" name="Monthly Active Users" stroke="#003d79" fill="#003d79" fillOpacity={0.3} activeDot={<GlowDot />} />
+                    <Area type="monotone" dataKey="dormant" name="Dormant" stroke="#94a3b8" fill="#94a3b8" fillOpacity={0.1} activeDot={<GlowDot />} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
             </div>
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-              <h4 className="font-medium text-slate-700 mb-4">Daily Volume by Type (Millions)</h4>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={detailData.transactions}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="type" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                  <Tooltip />
-                  <Bar dataKey="vol" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+            
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Daily Volume by Type (Millions)</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.transactions}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="type" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Bar dataKey="vol" fill="#8b5cf6" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Livin vs Kopra Usage (Millions)</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={detailData.appUsage}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Line type="monotone" dataKey="livin" name="Livin'" stroke="#3b82f6" strokeWidth={3} dot={{ r: 4 }} />
+                    <Line type="monotone" dataKey="kopra" name="Kopra" stroke="#10b981" strokeWidth={3} dot={{ r: 4 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Channel Volume: Fin vs Non-Fin</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.channelVolume}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="channel" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Bar dataKey="financial" name="Financial" fill="#8b5cf6" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                    <Bar dataKey="nonFinancial" name="Non-Financial" fill="#f472b6" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
         );
 
       case "wholesale-loans":
         return (
-          <div className="flex flex-col gap-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-                <h4 className="font-medium text-slate-700 mb-4">Exposure by Sector (Trillion Rp)</h4>
+          <div className={gridClass}>
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Exposure by Sector (Trillion Rp)</h4>
+              <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.exposure}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                     <XAxis dataKey="sector" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                    <Tooltip />
-                    <Bar dataKey="amount" fill="#003d79" radius={[4, 4, 0, 0]} />
+                    <Tooltip cursor={false} />
+                    <Bar dataKey="amount" fill="#003d79" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-              <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-                <h4 className="font-medium text-slate-700 mb-4">Loan Maturity Timeline (Trillion Rp)</h4>
+            </div>
+            
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Loan Maturity Timeline (Trillion Rp)</h4>
+              <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.maturity} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
                     <XAxis type="number" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis dataKey="term" type="category" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} width={80} />
-                    <Tooltip />
-                    <Bar dataKey="amount" fill="#6366f1" radius={[0, 4, 4, 0]} />
+                    <Tooltip cursor={false} />
+                    <Bar dataKey="amount" fill="#6366f1" radius={[0, 4, 4, 0]} activeBar={<ZoomedBar />} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col">
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">New Disbursals vs Repayments</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.loanFlow}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="sector" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Bar dataKey="new" name="Disbursals" fill="#10b981" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                    <Bar dataKey="repaid" name="Repayments" fill="#ef4444" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Loan Type (KMK vs KI)</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.loanType}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="sector" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Bar dataKey="kmk" name="Modal Kerja (KMK)" stackId="a" fill="#003d79" />
+                    <Bar dataKey="ki" name="Investasi (KI)" stackId="a" fill="#38bdf8" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={fullWidthCardClass}>
               <h4 className="font-medium text-slate-700 mb-4">Top 5 Corporate Borrowers</h4>
-              <div className="overflow-x-auto text-sm">
-                <table className="w-full text-left min-w-[500px]">
+              <div className="overflow-x-auto text-sm w-full">
+                <table className="w-full text-left min-w-[400px]">
                   <thead className="text-slate-400 border-b border-slate-100">
                     <tr>
                       <th className="pb-3 font-medium">Borrower Group</th>
                       <th className="pb-3 font-medium">Internal Rating</th>
-                      <th className="pb-3 font-medium">Limit (T)</th>
-                      <th className="pb-3 font-medium">Utilized (T)</th>
                       <th className="pb-3 font-medium">Usage %</th>
                     </tr>
                   </thead>
@@ -512,14 +797,12 @@ const ExpandedDetailCard = ({
                       <tr key={i} className="border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors">
                         <td className="py-4 text-slate-700 font-medium">{item.name}</td>
                         <td className="py-4"><span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-semibold">{item.rating}</span></td>
-                        <td className="py-4 text-slate-600">Rp {item.limit}</td>
-                        <td className="py-4 text-slate-600">Rp {item.utilized}</td>
                         <td className="py-4 text-slate-600">
                           <div className="flex items-center gap-2">
-                            <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden min-w-[60px]">
                               <div className="h-full bg-[#003d79]" style={{ width: `${(item.utilized / item.limit) * 100}%` }}></div>
                             </div>
-                            <span className="text-xs">{Math.round((item.utilized / item.limit) * 100)}%</span>
+                            <span className="text-xs w-8">{Math.round((item.utilized / item.limit) * 100)}%</span>
                           </div>
                         </td>
                       </tr>
@@ -533,43 +816,79 @@ const ExpandedDetailCard = ({
 
       case "npl":
         return (
-          <div className="flex flex-col gap-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-                <h4 className="font-medium text-slate-700 mb-4">NPL Ratio by Segment (%)</h4>
+          <div className={gridClass}>
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">NPL Ratio by Segment (%)</h4>
+              <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.segment}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                     <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                    <Tooltip />
-                    <Bar dataKey="rate" fill="#ef4444" radius={[4, 4, 0, 0]} />
+                    <Tooltip cursor={false} />
+                    <Bar dataKey="rate" fill="#ef4444" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-              <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-                <h4 className="font-medium text-slate-700 mb-4">Default Rate by Vintage Year (%)</h4>
+            </div>
+            
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Default Rate by Vintage Year (%)</h4>
+              <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={detailData.vintage}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                     <XAxis dataKey="year" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                    <Tooltip />
+                    <Tooltip cursor={false} />
                     <Line type="monotone" dataKey="defaultRate" name="Default Rate (%)" stroke="#ef4444" strokeWidth={3} dot={{ r: 4 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col">
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">NPL Balance vs Ratio</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.nplTrend}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="quarter" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis yAxisId="left" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis yAxisId="right" orientation="right" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} domain={[0, 3]} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Bar yAxisId="left" dataKey="balance" name="Balance (Trillion)" fill="#f87171" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                    <Line yAxisId="right" type="monotone" dataKey="ratio" name="Ratio (%)" stroke="#b91c1c" strokeWidth={3} dot={{ r: 4 }} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">NPL Downgrades vs Recoveries</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.nplMovement}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="segment" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Bar dataKey="downgrade" name="New NPL" fill="#ef4444" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                    <Bar dataKey="recovery" name="Recovered" fill="#10b981" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={fullWidthCardClass}>
               <h4 className="font-medium text-slate-700 mb-4">Active Recovery Efforts</h4>
-              <div className="overflow-x-auto text-sm">
-                <table className="w-full text-left">
+              <div className="overflow-x-auto text-sm w-full">
+                <table className="w-full text-left min-w-[350px]">
                   <thead className="text-slate-400 border-b border-slate-100">
                     <tr>
                       <th className="pb-3 font-medium">Loan ID</th>
                       <th className="pb-3 font-medium">Amount</th>
                       <th className="pb-3 font-medium">Status</th>
-                      <th className="pb-3 font-medium">Last Update</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -586,7 +905,6 @@ const ExpandedDetailCard = ({
                             {item.status}
                           </span>
                         </td>
-                        <td className="py-4 text-slate-500">{item.date}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -598,46 +916,83 @@ const ExpandedDetailCard = ({
 
       case "fraud-alerts":
         return (
-          <div className="flex flex-col gap-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-                <h4 className="font-medium text-slate-700 mb-4">Incidents by Type</h4>
+          <div className={gridClass}>
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Incidents by Type</h4>
+              <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
-                    <Pie data={detailData.typology} cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={2} dataKey="value" label>
+                    <Pie data={detailData.typology} cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={2} dataKey="value" label activeShape={(props: any) => <GlowPieSlice {...props} />}>
                       {detailData.typology.map((entry: any, index: number) => <Cell key={index} fill={COLORS[index % COLORS.length]} />)}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip cursor={false} />
                     <Legend />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
-              <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-                <h4 className="font-medium text-slate-700 mb-4">Incidents by Region</h4>
+            </div>
+            
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Incidents by Region</h4>
+              <div className={chartContainerClass}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={detailData.hotspots}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                     <XAxis dataKey="region" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                    <Tooltip />
-                    <Bar dataKey="alerts" fill="#ef4444" radius={[4, 4, 0, 0]} />
+                    <Tooltip cursor={false} />
+                    <Bar dataKey="alerts" fill="#ef4444" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 h-96 shadow-sm flex flex-col">
-              <h4 className="font-medium text-slate-700 mb-4">Resolution Time vs SLA Target (Days)</h4>
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={detailData.sla}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="week" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="actual" name="Avg Resolution (Days)" stroke="#ef4444" strokeWidth={3} dot={{ r: 4 }} />
-                  <Line type="monotone" dataKey="target" name="SLA Target" stroke="#10b981" strokeDasharray="5 5" strokeWidth={2} dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
+            <div className={fullWidthCardClass}>
+              <h4 className="font-medium text-slate-700">Resolution Time vs SLA Target (Days)</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={detailData.sla}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="week" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Line type="monotone" dataKey="actual" name="Avg Resolution (Days)" stroke="#ef4444" strokeWidth={3} dot={{ r: 4 }} />
+                    <Line type="monotone" dataKey="target" name="SLA Target" stroke="#10b981" strokeDasharray="5 5" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Reported vs Prevented</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.fraudResolution}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Bar dataKey="reported" name="Reported" fill="#ef4444" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                    <Bar dataKey="prevented" name="Prevented" fill="#10b981" radius={[4, 4, 0, 0]} activeBar={<ZoomedBar />} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="font-medium text-slate-700">Potential vs Actual Loss (Billion Rp)</h4>
+              <div className={chartContainerClass}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={detailData.fraudImpact}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                    <XAxis dataKey="type" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                    <Tooltip cursor={false} />
+                    <Legend />
+                    <Bar dataKey="potential" name="Potential Loss" stackId="a" fill="#f87171" />
+                    <Bar dataKey="actual" name="Actual Loss" stackId="a" fill="#991b1b" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
         );
