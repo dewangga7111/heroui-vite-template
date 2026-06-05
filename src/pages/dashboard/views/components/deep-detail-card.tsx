@@ -30,7 +30,11 @@ export default function DeepDetailCard({ layoutId, title, onBack, isDark }: Deep
   return (
     <motion.div
       layoutId={layoutId}
-      className="w-full bg-white dark:bg-[#111318] rounded-[2.5rem] p-6 lg:p-10 flex flex-col shadow-sm flex-1 min-h-[800px] z-50 relative"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3 }}
+      className="w-full flex flex-col flex-1 min-h-[800px] z-50 relative"
     >
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">

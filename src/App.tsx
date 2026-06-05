@@ -7,6 +7,7 @@ import BlankLayout from "@/layouts/blank";
 
 // Module views - Dashboard
 import Dashboard from "@/pages/dashboard/views/dashboard";
+import MetricDashboard from "@/pages/dashboard/views/metric-dashboard";
 
 // Module views - Users
 import UsersTable from "@/pages/users/views/users-table";
@@ -31,7 +32,7 @@ function App() {
       <Route element={<RequireAuth />}>
         <Route element={<DashboardLayout />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/metrics/:metricId" element={<Dashboard />} />
+          <Route path="/metrics/:metricId" element={<MetricDashboard />} />
 
           {/* Users Module */}
           <Route path="/users" element={<UsersTable />} />
