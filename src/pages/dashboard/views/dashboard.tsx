@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useTheme } from "next-themes";
+import { DETAIL_MOCK_DATA, METRICS, COLORS } from "../data/mock-data";
 import {
   AlertTriangle,
   Briefcase,
@@ -20,301 +23,9 @@ import {
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@heroui/react";
+import DeepDetailCard from "./components/deep-detail-card";
 
-const COLORS = ['#003d79', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
-
-// --- Mock Data ---
-const generateData = (
-  count: number,
-  min: number,
-  max: number,
-  type: "good" | "bad" | "mixed" = "good",
-) => {
-  return Array.from({ length: count }).map(() => {
-    let isHighlighted = false;
-
-    if (type === "mixed") {
-      isHighlighted = Math.random() > 0.8;
-    } else if (type === "bad") {
-      isHighlighted = true;
-    }
-
-    return {
-      type,
-      value: Math.floor(Math.random() * (max - min + 1)) + min,
-      isHighlighted,
-    };
-  });
-};
-
-const METRICS = [
-  {
-    id: "total-assets",
-    title: "Total Assets",
-    value: "Rp 2,134 T",
-    subtitle: "Up 12.4% YoY",
-    icon: Briefcase,
-    data: generateData(30, 20, 100, "good"),
-    layoutId: "card-assets",
-    isBad: false,
-    color: "#003d79",
-  },
-  {
-    id: "priority-customers",
-    title: "Nasabah Prioritas",
-    value: "142,501",
-    subtitle: "Up 4.2% MoM",
-    icon: Star,
-    data: generateData(30, 10, 80, "good"),
-    layoutId: "card-priority",
-    isBad: false,
-    color: "#10b981",
-  },
-  {
-    id: "regular-customers",
-    title: "Nasabah Biasa",
-    value: "31.2 M",
-    subtitle: "Up 8.1% YoY",
-    icon: Users,
-    data: generateData(30, 40, 90, "good"),
-    layoutId: "card-regular",
-    isBad: false,
-    color: "#f59e0b",
-  },
-  {
-    id: "wholesale-loans",
-    title: "Wholesale Loans",
-    value: "Rp 842 T",
-    subtitle: "Up 15.2% YoY",
-    icon: Building,
-    data: generateData(30, 30, 100, "good"),
-    layoutId: "card-wholesale",
-    isBad: false,
-    color: "#8b5cf6",
-  },
-  {
-    id: "npl",
-    title: "Non-Performing Loans",
-    value: "1.24%",
-    subtitle: "Down 0.1% YoY",
-    icon: AlertTriangle,
-    data: generateData(30, 10, 60, "bad"),
-    layoutId: "card-npl",
-    isBad: true,
-    color: "#ef4444",
-  },
-  {
-    id: "fraud-alerts",
-    title: "Fraud Alerts",
-    value: "342",
-    subtitle: "Resolved 98%",
-    icon: ShieldAlert,
-    data: generateData(30, 5, 40, "bad"),
-    layoutId: "card-fraud",
-    isBad: true,
-    color: "#f97316",
-  },
-];
-
-const DETAIL_MOCK_DATA = {
-  "total-assets": {
-    tabs: ["Asset Composition", "Yield Analysis", "Growth Trend"],
-    composition: [
-      { name: "Corporate Loans", value: 800 },
-      { name: "Govt Bonds", value: 600 },
-      { name: "Retail Loans", value: 400 },
-      { name: "Cash & Placements", value: 334 },
-    ],
-    yield: [
-      { name: "Q1", rate: 5.2 },
-      { name: "Q2", rate: 5.4 },
-      { name: "Q3", rate: 5.6 },
-      { name: "Q4", rate: 5.9 },
-    ],
-    growth: [
-      { year: "2020", actual: 1500, target: 1450 },
-      { year: "2021", actual: 1650, target: 1600 },
-      { year: "2022", actual: 1800, target: 1850 },
-      { year: "2023", actual: 2000, target: 1950 },
-      { year: "2024", actual: 2134, target: 2100 },
-    ],
-    yoyGrowth: [
-      { quarter: "Q1", y2023: 1950, y2024: 2010 },
-      { quarter: "Q2", y2023: 1980, y2024: 2050 },
-      { quarter: "Q3", y2023: 2000, y2024: 2080 },
-      { quarter: "Q4", y2023: 2000, y2024: 2134 },
-    ],
-    currencyComposition: [
-      { category: "Loans", idr: 1000, valas: 200 },
-      { category: "Bonds", idr: 500, valas: 100 },
-      { category: "Placements", idr: 250, valas: 84 },
-    ]
-  },
-  "priority-customers": {
-    tabs: ["AUM Tiers", "Demographics", "Net Flow"],
-    aum: [
-      { tier: "500M - 1B", customers: 85000 },
-      { tier: "1B - 5B", customers: 45000 },
-      { tier: "> 5B", customers: 12501 },
-    ],
-    demographics: [
-      { name: "25-35", value: 15 },
-      { name: "36-45", value: 35 },
-      { name: "46-55", value: 30 },
-      { name: "55+", value: 20 },
-    ],
-    flow: [
-      { month: "Jan", onboarded: 1200, churned: 300 },
-      { month: "Feb", onboarded: 1500, churned: 250 },
-      { month: "Mar", onboarded: 1100, churned: 400 },
-      { month: "Apr", onboarded: 1800, churned: 350 },
-    ],
-    acquisition: [
-      { month: "Jan", target: 1000, actual: 1200 },
-      { month: "Feb", target: 1100, actual: 1500 },
-      { month: "Mar", target: 1200, actual: 1100 },
-      { month: "Apr", target: 1300, actual: 1800 },
-      { month: "May", target: 1400, actual: 1600 },
-    ],
-    regionalAum: [
-      { region: "Jakarta", tier1: 45000, tier2: 25000 },
-      { region: "Jabar", tier1: 25000, tier2: 15000 },
-      { region: "Jatim", tier1: 20000, tier2: 12000 },
-      { region: "Sumatra", tier1: 15000, tier2: 8000 },
-      { region: "Bali", tier1: 10000, tier2: 5000 },
-    ]
-  },
-  "regular-customers": {
-    tabs: ["Digital Adoption", "Transaction Volume"],
-    adoption: [
-      { month: "Jan", mau: 20, dormant: 11 },
-      { month: "Feb", mau: 22, dormant: 10 },
-      { month: "Mar", mau: 25, dormant: 9 },
-      { month: "Apr", mau: 28, dormant: 7 },
-    ],
-    transactions: [
-      { type: "Transfer", vol: 800 },
-      { type: "QRIS", vol: 450 },
-      { type: "Top-up", vol: 350 },
-      { type: "Payment", vol: 200 },
-    ],
-    appUsage: [
-      { month: "Jan", livin: 18, kopra: 1.2 },
-      { month: "Feb", livin: 20, kopra: 1.3 },
-      { month: "Mar", livin: 22, kopra: 1.5 },
-      { month: "Apr", livin: 25, kopra: 1.8 },
-      { month: "May", livin: 28, kopra: 2.1 },
-    ],
-    channelVolume: [
-      { channel: "Livin", financial: 1200, nonFinancial: 800 },
-      { channel: "ATM", financial: 400, nonFinancial: 150 },
-      { channel: "Branch", financial: 100, nonFinancial: 50 },
-    ]
-  },
-  "wholesale-loans": {
-    tabs: ["Sector Exposure", "Top Borrowers", "Maturity Profile"],
-    exposure: [
-      { sector: "Infrastructure", amount: 300 },
-      { sector: "Manufacturing", amount: 250 },
-      { sector: "Energy", amount: 180 },
-      { sector: "Plantation", amount: 112 },
-    ],
-    topBorrowers: [
-      { name: "PT Adhi Karya", limit: 50, utilized: 45, rating: "AAA" },
-      { name: "PT Pertamina", limit: 120, utilized: 100, rating: "AAA" },
-      { name: "PT PLN", limit: 150, utilized: 140, rating: "AAA" },
-      { name: "PT Waskita", limit: 40, utilized: 38, rating: "BBB" },
-      { name: "PT Telkom", limit: 80, utilized: 50, rating: "AAA" },
-    ],
-    maturity: [
-      { term: "< 1 Year", amount: 150 },
-      { term: "1-3 Years", amount: 450 },
-      { term: "> 3 Years", amount: 242 },
-    ],
-    loanFlow: [
-      { sector: "Infrastruktur", new: 85, repaid: 40 },
-      { sector: "Manufaktur", new: 60, repaid: 55 },
-      { sector: "Energi", new: 45, repaid: 30 },
-      { sector: "Perkebunan", new: 25, repaid: 35 },
-    ],
-    loanType: [
-      { sector: "Infrastruktur", kmk: 100, ki: 200 },
-      { sector: "Manufaktur", kmk: 150, ki: 100 },
-      { sector: "Energi", kmk: 80, ki: 100 },
-      { sector: "Perkebunan", kmk: 72, ki: 40 },
-    ]
-  },
-  "npl": {
-    tabs: ["NPL by Segment", "Vintage Analysis", "Recovery Status"],
-    segment: [
-      { name: "Commercial", rate: 2.1 },
-      { name: "Consumer", rate: 1.8 },
-      { name: "SME", rate: 1.5 },
-      { name: "Micro", rate: 1.2 },
-      { name: "Corporate", rate: 0.8 },
-    ],
-    vintage: [
-      { year: "2020", defaultRate: 2.5 },
-      { year: "2021", defaultRate: 1.8 },
-      { year: "2022", defaultRate: 1.4 },
-      { year: "2023", defaultRate: 1.1 },
-      { year: "2024", defaultRate: 0.5 },
-    ],
-    recovery: [
-      { id: "L-9021", status: "Restructured", amount: "Rp 50B", date: "2024-05-12" },
-      { id: "L-3321", status: "Liquidated", amount: "Rp 12B", date: "2024-05-10" },
-      { id: "L-8842", status: "In Collection", amount: "Rp 5B", date: "2024-05-08" },
-      { id: "L-1102", status: "Written-off", amount: "Rp 20B", date: "2024-05-01" },
-    ],
-    nplTrend: [
-      { quarter: "Q1", balance: 24.5, ratio: 1.35 },
-      { quarter: "Q2", balance: 23.8, ratio: 1.30 },
-      { quarter: "Q3", balance: 23.1, ratio: 1.28 },
-      { quarter: "Q4", balance: 22.4, ratio: 1.24 },
-    ],
-    nplMovement: [
-      { segment: "Commercial", downgrade: 4.2, recovery: 5.1 },
-      { segment: "Consumer", downgrade: 3.5, recovery: 3.8 },
-      { segment: "SME", downgrade: 2.1, recovery: 2.4 },
-      { segment: "Micro", downgrade: 1.5, recovery: 1.8 },
-      { segment: "Corporate", downgrade: 0.8, recovery: 1.2 },
-    ]
-  },
-  "fraud-alerts": {
-    tabs: ["Fraud Typology", "Geographic Hotspots", "Resolution SLA"],
-    typology: [
-      { name: "Phishing", value: 45 },
-      { name: "Card Skimming", value: 25 },
-      { name: "Account Takeover", value: 20 },
-      { name: "Internal", value: 10 },
-    ],
-    hotspots: [
-      { region: "Jabodetabek", alerts: 150 },
-      { region: "West Java", alerts: 80 },
-      { region: "East Java", alerts: 60 },
-      { region: "Sumatra", alerts: 30 },
-      { region: "Bali", alerts: 22 },
-    ],
-    sla: [
-      { week: "W1", actual: 4.5, target: 5 },
-      { week: "W2", actual: 4.2, target: 5 },
-      { week: "W3", actual: 5.5, target: 5 },
-      { week: "W4", actual: 3.8, target: 5 },
-    ],
-    fraudResolution: [
-      { month: "Jan", reported: 120, prevented: 110 },
-      { month: "Feb", reported: 150, prevented: 142 },
-      { month: "Mar", reported: 90, prevented: 85 },
-      { month: "Apr", reported: 180, prevented: 175 },
-    ],
-    fraudImpact: [
-      { type: "Phishing", potential: 50, actual: 5 },
-      { type: "Card Skim", potential: 30, actual: 12 },
-      { type: "Takeover", potential: 80, actual: 15 },
-      { type: "Internal", potential: 20, actual: 2 },
-    ]
-  }
-};
+// Mock data imported from mock-data.ts
 
 // --- Components ---
 
@@ -465,16 +176,22 @@ const MetricCard = ({
 const ExpandedDetailCard = ({
   metric,
   onBack,
+  isMetricRoute,
+  onChartClick,
 }: {
   metric: any;
   onBack: () => void;
+  isMetricRoute?: boolean;
+  onChartClick?: (title: string) => void;
 }) => {
   const detailData = DETAIL_MOCK_DATA[metric.id as keyof typeof DETAIL_MOCK_DATA];
 
   const renderMetricContent = () => {
     const gridClass = "grid grid-cols-1 lg:grid-cols-2 gap-8";
-    const cardClass = "bg-white dark:bg-[#111318] p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col w-full";
-    const fullWidthCardClass = "bg-white dark:bg-[#111318] p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col w-full lg:col-span-2";
+    const baseCardClass = "chart-card-wrapper bg-white dark:bg-[#111318] p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col w-full";
+    const interactiveClass = isMetricRoute ? " cursor-pointer hover:border-blue-500/40 transition-colors" : "";
+    const cardClass = baseCardClass + interactiveClass;
+    const fullWidthCardClass = baseCardClass + " lg:col-span-2" + interactiveClass;
     const chartContainerClass = "h-72 w-full mt-4";
 
     switch (metric.id) {
@@ -1076,7 +793,19 @@ const ExpandedDetailCard = ({
       <div className="flex-1 overflow-y-auto pr-4 -mr-4 space-y-6 no-scrollbar pb-10">
 
         {/* Render All Charts for this Metric */}
-        {renderMetricContent()}
+        <div
+          onClick={(e) => {
+            if (!isMetricRoute || !onChartClick) return;
+            const target = e.target as HTMLElement;
+            const card = target.closest('.chart-card-wrapper');
+            if (card) {
+              const title = card.querySelector('h4')?.textContent;
+              if (title) onChartClick(title);
+            }
+          }}
+        >
+          {renderMetricContent()}
+        </div>
 
         {/* Global Recent Events Section */}
         <div className="bg-slate-50 dark:bg-[#1a1c23] p-6 rounded-2xl border border-slate-100 dark:border-slate-800 mt-8">
@@ -1123,7 +852,20 @@ const ExpandedDetailCard = ({
 };
 
 export default function DashboardPage() {
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const { metricId } = useParams();
+  const isMetricRoute = !!metricId;
+
+  const [selectedMetric, setSelectedMetric] = useState<string | null>(metricId || null);
+  const [deepDetailTitle, setDeepDetailTitle] = useState<string | null>(null);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  useEffect(() => {
+    if (metricId) {
+      setSelectedMetric(metricId);
+    }
+  }, [metricId]);
+
   const activeMetric = METRICS.find((m) => m.id === selectedMetric);
 
   return (
@@ -1135,20 +877,39 @@ export default function DashboardPage() {
       <div className="w-full mx-auto relative z-10 flex flex-col flex-1">
         {/* Header Section */}
         <AnimatePresence>
-          {!selectedMetric && (
+          {!selectedMetric && !isMetricRoute && (
             <motion.div
-              initial={{ height: 0, opacity: 0, marginBottom: 0 }}
-              animate={{ height: "auto", opacity: 1, marginBottom: 32 }}
-              exit={{ height: 0, opacity: 0, marginBottom: 0 }}
-              className="relative px-4 lg:px-8 overflow-hidden"
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="px-4 lg:px-8 mb-6 lg:mb-10 pt-4"
             >
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium">
-                Mandiri Analyst Portal
-              </p>
-              <h1 className="text-4xl lg:text-5xl font-semibold tracking-tight text-slate-800 dark:text-white">
-                Executive Summary
-              </h1>
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                  <h1 className="text-3xl lg:text-4xl font-light text-slate-800 dark:text-white tracking-tight mb-2">
+                    Executive Summary
+                  </h1>
+                  <p className="text-slate-500 dark:text-slate-400">
+                    Comprehensive overview of key performance indicators.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex flex-col text-right">
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                      Last Updated
+                    </span>
+                    <span className="text-xs text-slate-400 dark:text-slate-500">
+                      Today, 09:41 AM
+                    </span>
+                  </div>
+                  <button className="w-10 h-10 rounded-full bg-white dark:bg-[#1a1c23] shadow-sm flex items-center justify-center text-[#003d79] dark:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <MoreHorizontal size={20} />
+                  </button>
+                  <button className="w-10 h-10 rounded-full bg-[#003d79] dark:bg-blue-600 text-white shadow-md flex items-center justify-center hover:bg-[#002b5e] dark:hover:bg-blue-700 transition-colors">
+                    <Plus size={20} />
+                  </button>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -1158,11 +919,23 @@ export default function DashboardPage() {
           <Card className="w-full flex-1 bg-white dark:bg-[#1a1c23] shadow-xl border-none rounded-t-[2.5rem] rounded-b-none overflow-hidden">
             <Card.Content className="p-4 lg:p-6 flex flex-col relative">
               <AnimatePresence mode="wait">
-                {selectedMetric ? (
+                {deepDetailTitle ? (
+                  <DeepDetailCard
+                    key="deep-detail"
+                    layoutId="deep-detail"
+                    title={deepDetailTitle}
+                    onBack={() => setDeepDetailTitle(null)}
+                    isDark={isDark}
+                  />
+                ) : selectedMetric && activeMetric ? (
                   <ExpandedDetailCard
-                    key="detail"
+                    key="expanded"
                     metric={activeMetric}
-                    onBack={() => setSelectedMetric(null)}
+                    onBack={() => {
+                      if (!isMetricRoute) {
+                        setSelectedMetric(null);
+                      }
+                    }}
                   />
                 ) : (
                   <motion.div

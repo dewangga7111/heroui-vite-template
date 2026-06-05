@@ -31,6 +31,7 @@ function App() {
       <Route element={<RequireAuth />}>
         <Route element={<DashboardLayout />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/metrics/:metricId" element={<Dashboard />} />
 
           {/* Users Module */}
           <Route path="/users" element={<UsersTable />} />
